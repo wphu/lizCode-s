@@ -74,14 +74,6 @@ void Interpolator2D2Order::operator() (ElectroMagn* EMfields, Particles &particl
     coeffyd_[1] = 0.75 - delta2;
     coeffyd_[2] = 0.5 * (delta2+delta+0.25);
 
-    //!\todo CHECK if this is correct for both primal & dual grids !!!
-    // First index for summation
-    ip_ = ip_ - 1 - i_domain_begin;
-    id_ = id_ - 1 - i_domain_begin;
-    jp_ = jp_ - 1 - j_domain_begin;
-    jd_ = jd_ - 1 - j_domain_begin;
-
-
     // -------------------------
     // Interpolation of Ex^(d,p)
     // -------------------------

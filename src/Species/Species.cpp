@@ -277,15 +277,16 @@ void Species::initMomentum(unsigned int nPart, unsigned int iPart, double *temp,
     // average mean-momentum (used to center the distribution)
     double pMean[3]= {0.0,0.0,0.0};
 
-    if (initMomentum_type == "cold") {
-
+    if (initMomentum_type == "cold") 
+    {
         for (unsigned int p= iPart; p<iPart+nPart; p++) {
             for (unsigned int i=0; i<3 ; i++) {
                 particles.momentum(i,p) = 0.0;
             }
         }
 
-    } else if (initMomentum_type == "maxwell")
+    } 
+    else if (initMomentum_type == "maxwell")
     {
         // initialize using the Maxwell distribution function
 
@@ -357,7 +358,8 @@ void Species::initMomentum(unsigned int nPart, unsigned int iPart, double *temp,
         }
 
 
-    }else if (initMomentum_type == "maxwell-juettner")
+    }
+    else if (initMomentum_type == "maxwell-juettner")
     {
         // initialize using the Maxwell-Juettner distribution function
 
@@ -406,9 +408,11 @@ void Species::initMomentum(unsigned int nPart, unsigned int iPart, double *temp,
         }
 
     // Rectangular distribution
-    } else if (initMomentum_type == "rectangular") {
-
-        for (unsigned int p= iPart; p<iPart+nPart; p++) {
+    } 
+    else if (initMomentum_type == "rectangular") 
+    {
+        for (unsigned int p= iPart; p<iPart+nPart; p++) 
+        {
             particles.momentum(0,p) = 2.0 * (2.*(double)rand() / RAND_MAX - 1.) * sqrt(2.0 * temp[0] * params.const_e / species_param.mass);
             particles.momentum(1,p) = (0.00001 * 2.*(double)rand() / RAND_MAX - 1.) * sqrt(2.0 * temp[0] * params.const_e / species_param.mass);
             particles.momentum(2,p) = (0.00001 * 2.*(double)rand() / RAND_MAX - 1.) * sqrt(2.0 * temp[0] * params.const_e / species_param.mass);
@@ -924,7 +928,7 @@ void Species::dynamics_EM(double time_dual, unsigned int ispec, ElectroMagn* EMf
                 //}
             }//iPart
 
-/*
+            /*
             // Copy buffer back to the global array and free buffer****************
             if (!particles.isTestParticles) {
                 // this part is dimension dependant !! this is for dim = 1
@@ -971,7 +975,7 @@ void Species::dynamics_EM(double time_dual, unsigned int ispec, ElectroMagn* EMf
                     }
                 } // End if (ndim == 2)
             } // if (!particles.isTestParticles)
-*/
+            */
 
         }// ibin
 
@@ -1005,7 +1009,7 @@ void Species::dynamics_EM(double time_dual, unsigned int ispec, ElectroMagn* EMf
 }//END dynamic
 
 
-void Species::Project(double time_dual, unsigned int ispec, ElectroMagn* EMfields, Projector* Proj, SmileiMPI *smpi, PicParams &params)
+void Species::Project(double time_dual, unsigned int ispec, ElectroMagn* EMfields, Projector* Proj, PicParams &params)
 {
 
     if (time_dual>species_param.time_frozen) { // moving particle
@@ -1170,45 +1174,6 @@ void Species::sort_part()
     while ( numSort > 0 );
 
 }
-/*
-void Species::movingWindow_x(unsigned int shift, SmileiMPI *smpi, PicParams& params)
-{
-    // Update BC positions
-    partBoundCond->moveWindow_x( shift*cell_length[0], smpi );
-    // Set for bin managment
-    min_loc += shift*cell_length[0];
-
-    // Send particles of first bin on process rank-1
-    // If no rank-1 -> particles deleted
-    clearExchList();
-
-    for (unsigned int ibin = 0 ; ibin < 1 ; ibin++)
-        for (int iPart=bmin[ibin] ; iPart<bmax[ibin]; iPart++ ) {
-            addPartInExchList( iPart );
-            nrj_mw_lost += particles.weight(iPart)*(particles.lor_fac(iPart)-1.0);
-        }
-
-    // bin 0 empty
-    // Shifts all the bins by 1.
-    bmin.erase( bmin.begin() );
-    bmax.erase( bmax.begin() );
-    // Create new bin at the end
-    // Update last values of bmin and bmax to handle correctly received particles
-    bmin.push_back( bmax[bmax.size()-1] );
-    bmax.push_back( bmax[bmax.size()-1] );
-    bmin[0] = 0;
-
-    int iDim(0);
-    smpi->exchangeParticles( this, speciesNumber,params, 0, iDim );
-
-    // Create new particles
-    if (smpi->isEastern() ) {
-        defineNewCells(shift, smpi, params);
-    }
-
-}
-*/
-
 
 
 int Species::createParticles(vector<unsigned int> n_space_to_create, vector<double> cell_index, int new_bin_idx, PicParams& params  )
@@ -1563,25 +1528,6 @@ void Species::erase_particles_from_bins(std::vector<int> &indexs_to_erase)
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
 
-
-
-
-
-
-
-
-/*
-void Species::updateMvWinLimits(double x_moved) {
-    partBoundCond->updateMvWinLimits(x_moved);
-    min_loc += x_moved;
-}
-//Do we have to project this species ?
- bool Species::isProj(double time_dual, SimWindow* simWindow) {
-    //Recompute frozen particles density if
-    //moving window is activated, actually moving at this time step, and we are not in a density slope.
-    return time_dual > species_param.time_frozen  || (simWindow && simWindow->isMoving(time_dual)) ;
-}
-*/
 
 void Species::printAvgVelocity()
 {

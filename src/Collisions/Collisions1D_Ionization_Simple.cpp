@@ -36,13 +36,6 @@ Collisions1D_Ionization_Simple::Collisions1D_Ionization_Simple(PicParams& params
     // Calculate total number of bins
     nbins = vecSpecies[0]->bmin.size();
     totbins = nbins;
-    //MPI_Allreduce( smpi->isMaster()?MPI_IN_PLACE:&totbins, &totbins, 1, MPI_INTEGER, MPI_SUM, MPI_COMM_WORLD);
-    MPI_Reduce( smpi->isMaster()?MPI_IN_PLACE:&totbins, &totbins, 1, MPI_INTEGER, MPI_SUM, 0, MPI_COMM_WORLD);
-
-    // if debug requested, prepare hdf5 file
-
-
-
 }
 
 Collisions1D_Ionization_Simple::~Collisions1D_Ionization_Simple()

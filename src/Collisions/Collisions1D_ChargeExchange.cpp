@@ -32,8 +32,6 @@ Collisions1D_ChargeExchange::Collisions1D_ChargeExchange(PicParams& params, vect
     // Calculate total number of bins
     nbins = vecSpecies[0]->bmin.size();
     totbins = nbins;
-    //MPI_Allreduce( smpi->isMaster()?MPI_IN_PLACE:&totbins, &totbins, 1, MPI_INTEGER, MPI_SUM, MPI_COMM_WORLD);
-    //MPI_Reduce( smpi->isMaster()?MPI_IN_PLACE:&totbins, &totbins, 1, MPI_INTEGER, MPI_SUM, 0, MPI_COMM_WORLD);
 
     readCrossSection();
 
@@ -112,8 +110,8 @@ void Collisions1D_ChargeExchange::collide(PicParams& params, ElectroMagn* fields
     sigma_cr_max = maxCV(s1, s2);
     for (unsigned int ibin=0 ; ibin<nbins ; ibin++) {
 
-        if(  smpi->getDomainLocalMin(0) + (ibin+1) * params.cell_length[0] < params.region_collision_zoom[0]
-          || smpi->getDomainLocalMin(0) + ibin * params.cell_length[0] > params.region_collision_zoom[1] )
+        if(  (ibin+1) * params.cell_length[0] < params.region_collision_zoom[0]
+          || ibin * params.cell_length[0] > params.region_collision_zoom[1] )
         {
             collision_zoom_factor = 1.0;
         }
@@ -222,7 +220,7 @@ void Collisions1D_ChargeExchange::collide(PicParams& params, ElectroMagn* fields
                 // kinetic energy of new species1 (ion)
                 ke_secondary = 0.5 * m1 * v_square / const_e;
                 ke_radiative = ke_primary - ke_secondary;
-                iBin_global = smpi->getDomainLocalMin(0) / params.cell_length[0] + ibin;
+                iBin_global = ibin;
                 diag1D->radiative_energy_collision[n_collisions][iBin_global] += ke_radiative;
             } // end if
         }

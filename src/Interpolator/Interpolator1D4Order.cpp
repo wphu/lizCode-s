@@ -66,8 +66,6 @@ void Interpolator1D4Order::operator() (ElectroMagn* EMfields, Particles &particl
     coeffp_[3] = dble_19_ov_96   + dble_11_ov_24 * xjmxi  + dble_1_ov_4 * xjmxi2  - dble_1_ov_6  * xjmxi3 - dble_1_ov_6  * xjmxi4;
     coeffp_[4] = dble_1_ov_384   + dble_1_ov_48  * xjmxi  + dble_1_ov_16 * xjmxi2 + dble_1_ov_12 * xjmxi3 + dble_1_ov_24 * xjmxi4;
 
-    ip_ -= index_domain_begin;
-
     (*ELoc).y = compute(coeffp_, Ey1D,   ip_);  
     (*ELoc).z = compute(coeffp_, Ez1D,   ip_);  
     (*BLoc).x = compute(coeffp_, Bx1D_m, ip_);
@@ -88,8 +86,6 @@ void Interpolator1D4Order::operator() (ElectroMagn* EMfields, Particles &particl
     coeffd_[2] = dble_115_ov_192 - dble_5_ov_8   * xjmxi2 + dble_1_ov_4 * xjmxi4;
     coeffd_[3] = dble_19_ov_96   + dble_11_ov_24 * xjmxi  + dble_1_ov_4 * xjmxi2  - dble_1_ov_6  * xjmxi3 - dble_1_ov_6  * xjmxi4;
     coeffd_[4] = dble_1_ov_384   + dble_1_ov_48  * xjmxi  + dble_1_ov_16 * xjmxi2 + dble_1_ov_12 * xjmxi3 + dble_1_ov_24 * xjmxi4;
-
-    id_ -= index_domain_begin;
 
     (*ELoc).x = compute(coeffd_, Ex1D,   id_);  
     (*BLoc).y = compute(coeffd_, By1D_m, id_);  

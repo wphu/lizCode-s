@@ -32,8 +32,6 @@ Projector1D4Order::Projector1D4Order (PicParams& params) : Projector1D(params)
     dble_115_ov_192 = 115.0/192.0;
     dble_5_ov_8 = 5.0/8.0;
 
-    index_domain_begin = ;
-
     DEBUG("cell_length "<< params.cell_length[0]);
 
 }
@@ -137,7 +135,6 @@ void Projector1D4Order::operator() (Field* Jx, Field* Jy, Field* Jz, Field* rho,
         Jx_p[i] = Jx_p[i-1] + crx_p * Wl[i-1];
     }
 
-    ipo -= index_domain_begin;
     //cout << "\tcoords = " << particles.position(0, ipart) << "\tglobal index = " << ip;
     //cout << "\tlocal index = " << ip << endl;
 
@@ -233,7 +230,6 @@ void Projector1D4Order::operator() (double* Jx, double* Jy, double* Jz, double* 
         Jx_p[i] = Jx_p[i-1] + crx_p * Wl[i-1];
     }
 
-    ipo -= index_domain_begin + bin ;
     //cout << "\tcoords = " << particles.position(0, ipart) << "\tglobal index = " << ip;
     //cout << "\tlocal index = " << ip << endl;
 

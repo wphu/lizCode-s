@@ -64,13 +64,6 @@ void Interpolator3D1Order::operator() (ElectroMagn* EMfields, Particles &particl
     coeffzp_[0] = 1.0 - delta;
     coeffzp_[1] = delta;
 
-    //!\todo CHECK if this is correct for both primal & dual grids !!!
-    // First index for summation
-    ip_ = ip_ - i_domain_begin;
-    jp_ = jp_ - j_domain_begin;
-    kp_ = kp_ - k_domain_begin;
-
-
     // -------------------------
     // Interpolation of Ex^(d,p)
     // -------------------------

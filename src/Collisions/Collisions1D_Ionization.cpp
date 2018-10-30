@@ -116,8 +116,8 @@ void Collisions1D_Ionization::collide(PicParams& params, ElectroMagn* fields, ve
     sigma_cr_max = maxCV(p1, m1);
     for (unsigned int ibin=0 ; ibin<nbins ; ibin++) {
 
-        if(  smpi->getDomainLocalMin(0) + (ibin+1) * params.cell_length[0] < params.region_collision_zoom[0]
-          || smpi->getDomainLocalMin(0) + ibin * params.cell_length[0] > params.region_collision_zoom[1] )
+        if( (ibin+1) * params.cell_length[0] < params.region_collision_zoom[0]
+        || ibin * params.cell_length[0] > params.region_collision_zoom[1] )
         {
             collision_zoom_factor = 1.0;
         }
@@ -145,7 +145,6 @@ void Collisions1D_Ionization::collide(PicParams& params, ElectroMagn* fields, ve
         }
         random_shuffle(index2.begin(), index2.end());
 
-        //smpi->barrier();
         //MESSAGE("nbinsaaaa"<<"  "<<ibin<<"  "<<n1[ibin]<<" "<<n2[ibin]);
         // Now start the real loop
         // See equations in http://dx.doi.org/10.1063/1.4742167
@@ -247,7 +246,7 @@ void Collisions1D_Ionization::collide(PicParams& params, ElectroMagn* fields, ve
                 indexes_of_particles_to_erase_s2.push_back(i2);
                 totNCollision++;
 
-                iBin_global = smpi->getDomainLocalMin(0) / params.cell_length[0] + ibin;
+                iBin_global = ibin;
                 diag1D->radiative_energy_collision[n_collisions][iBin_global] += energy_ionization_threshold;
             } // end if
         }

@@ -88,9 +88,8 @@ PartSource1D (params)
         index_source_middle = params.n_space[0] / 2;
     }
 
-    loadPos_start = loadBin_start*params.cell_length[0];
-    loadPos_end = ;
-    loadBin_end = params.n_space[0] - 1;
+    loadBin_start = loadPos_start / params.cell_length[0];
+    loadBin_end = loadPos_end / params.cell_length[0];
 
     // Parameters for "nq"
     timeStep_checkFor_nq = 0;
@@ -287,7 +286,7 @@ void PartSource1D_Load::emitLoad(PicParams& params, vector<Species*>& vecSpecies
                 ERROR("nPart not equal to bmax - bmin!! "<<nPart<<" "<<s1->bmax[ibin] - s1->bmin[ibin]<<" "<<ibin);
             }
             cell_length[0] = params.cell_length[0];
-            indexes[0] = smpi->getDomainLocalMin(0) + ibin*params.cell_length[0];
+            indexes[0] = ibin*params.cell_length[0];
 
             s1->initPosition(nPart, iPart, indexes, params.nDim_particle,
                          cell_length, s1->species_param.initPosition_type);
@@ -347,7 +346,7 @@ void PartSource1D_Load::emitLoad(PicParams& params, vector<Species*>& vecSpecies
             iPart = s1->bmax[ibin] - count_of_particles_to_insert[ibin];
             nPart = count_of_particles_to_insert[ibin];
             cell_length[0] = params.cell_length[0];
-            indexes[0] = smpi->getDomainLocalMin(0) + ibin*params.cell_length[0];
+            indexes[0] = ibin*params.cell_length[0];
 
             s1->initPosition(nPart, iPart, indexes, params.nDim_particle,
                          cell_length, s1->species_param.initPosition_type);
@@ -400,7 +399,7 @@ void PartSource1D_Load::emitLoad(PicParams& params, vector<Species*>& vecSpecies
     				iPart = s1->bmax[ibin] - count_of_particles_to_insert[ibin];
     				nPart = count_of_particles_to_insert[ibin];
     				cell_length[0] = params.cell_length[0];
-    				indexes[0] = smpi->getDomainLocalMin(0) + ibin*params.cell_length[0];
+    				indexes[0] = ibin*params.cell_length[0];
 
     				s1->initPosition(nPart, iPart, indexes, params.nDim_particle,
     							 cell_length, s1->species_param.initPosition_type);

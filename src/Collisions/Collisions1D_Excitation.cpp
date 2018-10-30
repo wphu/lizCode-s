@@ -28,9 +28,6 @@ Collisions1D_Excitation::Collisions1D_Excitation(PicParams& params, vector<Speci
     nbins = vecSpecies[0]->bmin.size();
     totbins = nbins;
 
-    //MPI_Allreduce( smpi->isMaster()?MPI_IN_PLACE:&totbins, &totbins, 1, MPI_INTEGER, MPI_SUM, MPI_COMM_WORLD);
-    //MPI_Reduce( smpi->isMaster()?MPI_IN_PLACE:&totbins, &totbins, 1, MPI_INTEGER, MPI_SUM, 0, MPI_COMM_WORLD);
-
     readCrossSection();
     energy_excitation_threshold = crossSection[0][0];
 
@@ -104,8 +101,8 @@ void Collisions1D_Excitation::collide(PicParams& params, ElectroMagn* fields, ve
     sigma_cr_max = maxCV(p1, m1);
     for (unsigned int ibin=0 ; ibin<nbins ; ibin++) {
 
-        if(  smpi->getDomainLocalMin(0) + (ibin+1) * params.cell_length[0] < params.region_collision_zoom[0]
-          || smpi->getDomainLocalMin(0) + ibin * params.cell_length[0] > params.region_collision_zoom[1] )
+        if( (ibin+1) * params.cell_length[0] < params.region_collision_zoom[0]
+        || ibin * params.cell_length[0] > params.region_collision_zoom[1] )
         {
             collision_zoom_factor = 1.0;
         }
@@ -200,7 +197,7 @@ void Collisions1D_Excitation::collide(PicParams& params, ElectroMagn* fields, ve
 
                 totNCollision++;
 
-                iBin_global = smpi->getDomainLocalMin(0) / params.cell_length[0] + ibin;
+                iBin_global = ibin;
                 diag1D->radiative_energy_collision[n_collisions][iBin_global] += energy_excitation_threshold;
             } // end if
         }

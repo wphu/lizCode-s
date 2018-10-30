@@ -24,11 +24,6 @@ Diagnostic(params)
     dy_inv_   = 1.0/params.cell_length[1];
     dz_inv_   = 1.0/params.cell_length[2];
 
-    SmileiMPI_Cart3D* smpi3D = static_cast<SmileiMPI_Cart3D*>(smpi);
-    i_domain_begin = smpi3D->getCellStartingGlobalIndex(0);
-    j_domain_begin = smpi3D->getCellStartingGlobalIndex(1);
-    k_domain_begin = smpi3D->getCellStartingGlobalIndex(2);
-
     n_species = params.species_param.size();
     particleFlux.resize(n_species);
     heatFlux.resize(n_species);
@@ -131,8 +126,6 @@ void Diagnostic3D::run( Grid* grid, vector<Species*>& vecSpecies, ElectroMagn* E
 		{
             s1 = vecSpecies[i_species];
 			wlt0 = s1->species_param.weight * dx * dy / (timestep * step_ave);
-            smpi->reduce_sum_double( particleFlux[i_species]->data_, particleFlux_global[i_species]->data_, dim_global );
-            smpi->reduce_sum_double( heatFlux[i_species]->data_, heatFlux_global[i_species]->data_, dim_global );
 		}
 	}
  

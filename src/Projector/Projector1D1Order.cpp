@@ -20,8 +20,6 @@ Projector1D1Order::Projector1D1Order (PicParams& params) : Projector1D(params)
     dx_inv_  = 1.0/params.cell_length[0];
     dx_ov_dt = params.cell_length[0] / params.timestep;
 
-    index_domain_begin = ;
-
     DEBUG("cell_length "<< params.cell_length[0]);
 
 }
@@ -77,7 +75,6 @@ void Projector1D1Order::operator() (Field* rho, Particles &particles, int ipart,
 
     //cout << "Pos = " << particles.position(0, ipart) << " - i global = " << i << " - i local = " << i-index_domain_begin <<endl;
 
-    i -= index_domain_begin;
 
     //if(i > rho1D->dims_[0] || i+1 > rho1D->dims_[0]) {
     //    cout<<"Projection out of limits: i = "<<i<<" x = "<<particles.position(0, ipart)<<endl;
@@ -119,7 +116,6 @@ void Projector1D1Order::operator() (Field* rho, Particles &particles, int ipart)
 
     //cout << "Pos = " << particles.position(0, ipart) << " - i global = " << i << " - i local = " << i-index_domain_begin <<endl;
 
-    i -= index_domain_begin;
 
     //if(i > rho1D->dims_[0] || i+1 > rho1D->dims_[0]) {
     //    cout<<"Projection out of limits: i = "<<i<<" x = "<<particles.position(0, ipart)<<endl;

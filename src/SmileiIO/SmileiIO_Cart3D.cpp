@@ -136,10 +136,6 @@ void SmileiIO_Cart3D::write( PicParams& params, ElectroMagn* fields, vector<Spec
     int iDiag;
     int n_dim_data = 3;
     Diagnostic3D* diag3D = static_cast<Diagnostic3D*>(diag);
-    if(params.is_calVDF)
-    {
-        //calVDF( params, smpi, fields, vecSpecies, itime);
-    }
 
     if( itime % params.dump_step == 0)
     {

@@ -15,10 +15,6 @@ Diagnostic(params)
     dx_inv_   = 1.0/params.cell_length[0];
     dy_inv_   = 1.0/params.cell_length[1];
 
-    SmileiMPI_Cart2D* smpi2D = static_cast<SmileiMPI_Cart2D*>(smpi);
-    i_domain_begin = smpi2D->getCellStartingGlobalIndex(0);
-    j_domain_begin = smpi2D->getCellStartingGlobalIndex(1);
-
     n_species = params.species_param.size();
     n_line = grid2D->lines.size();
     n_segments.resize(n_line);
@@ -171,10 +167,6 @@ void Diagnostic2D::run( Grid* grid, vector<Species*>& vecSpecies, ElectroMagn* E
 			wlt0 = s1->species_param.weight * dx * dy / (timestep * step_ave);
             for(int iLine = 0; iLine < particleFlux[iSpec].size(); iLine++)
             {
-                smpi->reduce_sum_double( &(particleFlux[iSpec][iLine][0]), &(particleFlux_global[iSpec][iLine][0]), particleFlux[iSpec][iLine].size() );
-                smpi->reduce_sum_double( &(heatFlux[iSpec][iLine][0]), &(heatFlux_global[iSpec][iLine][0]), heatFlux[iSpec][iLine].size() );
-                smpi->reduce_sum_double( &(averageAngle[iSpec][iLine][0]), &(averageAngle_global[iSpec][iLine][0]), averageAngle[iSpec][iLine].size() );
-                
                 for(int iSegment = 0; iSegment < particleFlux_global[iSpec][iLine].size(); iSegment++)
                 {
                     wlt = wlt0 / grid2D->lines[iLine][iSegment].length;

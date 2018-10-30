@@ -13,8 +13,6 @@ class Interpolator1D : public Interpolator
 public:
     Interpolator1D(PicParams &params): Interpolator(params) {};
     virtual ~Interpolator1D() {};
-    virtual void mv_win(unsigned int shift) {index_domain_begin += shift;}
-    virtual void setMvWinLimits(unsigned int shift) {index_domain_begin = shift;}
 
     virtual void operator() (ElectroMagn* EMfields, Particles &particles, int ipart, LocalFields* ELoc, LocalFields* BLoc) = 0;
 
@@ -23,7 +21,6 @@ public:
 protected:
     //! Inverse of the spatial-step
     double dx_inv_;
-    unsigned int index_domain_begin;
 };
 
 #endif

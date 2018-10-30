@@ -26,8 +26,6 @@ protected:
     double dy_inv_;
     double dx_ov_dt;
     double dy_ov_dt;
-    int i_domain_begin;
-    int j_domain_begin;
 };
 
 #endif

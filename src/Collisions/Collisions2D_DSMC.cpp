@@ -34,9 +34,6 @@ Collisions2D_DSMC::Collisions2D_DSMC(PicParams& params, vector<Species*>& vecSpe
     // Calculate total number of bins
     nbins = vecSpecies[0]->bmin.size();
     totbins = nbins;
-
-
-
 }
 
 Collisions2D_DSMC::~Collisions2D_DSMC()

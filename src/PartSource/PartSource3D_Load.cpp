@@ -52,22 +52,13 @@ PartSource3D (params)
 
     YZArea = 1.0;
 
-    // define the x-direction range of source region
-    loadPos_start = 0.0;
-    loadBin_start = 0;
-    loadPos_end = 0.0;
-    loadBin_end = 0;
+    loadBin_start = loadPos_start / params.cell_length[0];
+    loadBin_end = loadPos_end / params.cell_length[0];
+    loadBin_Ystart = loadPos_Ystart / params.cell_length[1];
+    loadBin_Yend = loadPos_Yend / params.cell_length[1];
+    loadBin_Zstart = loadPos_Zstart / params.cell_length[2];
+    loadBin_Zend = loadPos_Zend / params.cell_length[2];    
 
-    loadPos_Ystart = 0.0;
-    loadBin_Ystart = 0;
-    loadPos_Yend = 0.0;
-    loadBin_Yend = 0;
-
-    loadPos_Zstart = 0.0;
-    loadBin_Zstart = 0;
-    loadPos_Zend = 0.0;
-    loadBin_Zend = 0;
-    
     // load particles by number_density and Temperature
     numPart_in_each_cell = loadDensity / params.species_param[species1].weight;
     if(loadKind == "nT") {

@@ -36,12 +36,6 @@ Collisions1D_Elastic::Collisions1D_Elastic(PicParams& params, vector<Species*>& 
     // Calculate total number of bins
     nbins = vecSpecies[0]->bmin.size();
     totbins = nbins;
-    //MPI_Allreduce( smpi->isMaster()?MPI_IN_PLACE:&totbins, &totbins, 1, MPI_INTEGER, MPI_SUM, MPI_COMM_WORLD);
-    //MPI_Reduce( smpi->isMaster()?MPI_IN_PLACE:&totbins, &totbins, 1, MPI_INTEGER, MPI_SUM, 0, MPI_COMM_WORLD);
-
-
-
-
 }
 
 Collisions1D_Elastic::~Collisions1D_Elastic()

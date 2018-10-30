@@ -11,9 +11,7 @@ using namespace std;
 Diagnostic1D::Diagnostic1D(PicParams& params, ElectroMagn* EMfields, vector<Collisions*> &vecCollisions) :
 Diagnostic(params)
 {
-	SmileiMPI_Cart1D* smpi1D = static_cast<SmileiMPI_Cart1D*>(smpi);
 	dx_inv_  = 1.0/params.cell_length[0];
-	index_domain_begin = smpi1D->getCellStartingGlobalIndex(0);
 
 	particleFlux.resize(n_species);
 	heatFlux.resize(n_species);
@@ -165,7 +163,6 @@ void Diagnostic1D::run( Grid* grid, vector<Species*>& vecSpecies, ElectroMagn* E
 		wlt = s1->species_param.weight / (dx_inv_ * timestep * step_ave);
 		for(int iCollision = 0; iCollision < n_collision; iCollision++)
 		{
-			smpi->reduce_sum_double(&radiative_energy_collision[iCollision][0], &radiative_energy_collision_global[iCollision][0], radiative_energy_collision[iCollision].size());
 			for(int iBin = 0; iBin < radiative_energy_collision_global[iCollision].size(); iBin++)
 			{
 				radiative_energy_collision_global[iCollision][iBin] *= wlt;
@@ -174,16 +171,13 @@ void Diagnostic1D::run( Grid* grid, vector<Species*>& vecSpecies, ElectroMagn* E
 	}
 
 	// calculate velocity and temperature of each species
-	calVT(smpi, vecSpecies, EMfields, itime);
+	calVT(vecSpecies, EMfields, itime);
 
-	//calTotalEnergy(smpi, vecSpecies, EMfields, itime);
-
-
-
+	//calTotalEnergy(vecSpecies, EMfields, itime);
 }
 
 
-void Diagnostic1D::calVT(SmileiMPI* smpi, vector<Species*>& vecSpecies, ElectroMagn* EMfields, int itime)
+void Diagnostic1D::calVT(vector<Species*>& vecSpecies, ElectroMagn* EMfields, int itime)
 {
 	Species *s1;
 	Particles *p1;
@@ -321,15 +315,6 @@ void Diagnostic1D::calVT(SmileiMPI* smpi, vector<Species*>& vecSpecies, ElectroM
 				(*Vp1D_s_avg)(i) *= step_ave_inv_;
 				(*T1D_s_avg)(i)  *= step_ave_inv_;
 			}
-
-			// another way: firstly gather V, T, ptclNum, then calculate V_global, T_global
-			SmileiMPI_Cart1D* smpi1D = static_cast<SmileiMPI_Cart1D*>(smpi);
-			smpi1D->gatherRho( static_cast<Field1D*>(EMfields->Vx_s_global_avg[iSpec]), Vx1D_s_avg );
-			smpi1D->gatherRho( static_cast<Field1D*>(EMfields->Vy_s_global_avg[iSpec]), Vy1D_s_avg );
-			smpi1D->gatherRho( static_cast<Field1D*>(EMfields->Vz_s_global_avg[iSpec]), Vz1D_s_avg );
-			smpi1D->gatherRho( static_cast<Field1D*>(EMfields->Vp_s_global_avg[iSpec]), Vp1D_s_avg );
-			smpi1D->gatherRho( static_cast<Field1D*>(EMfields->T_s_global_avg [iSpec]), T1D_s_avg );
-
 		}
 
 	}
@@ -346,7 +331,7 @@ void Diagnostic1D::calVT(SmileiMPI* smpi, vector<Species*>& vecSpecies, ElectroM
 }
 
 
-void Diagnostic1D::calTotalEnergy(SmileiMPI* smpi, vector<Species*>& vecSpecies, ElectroMagn* EMfields, int itime)
+void Diagnostic1D::calTotalEnergy(vector<Species*>& vecSpecies, ElectroMagn* EMfields, int itime)
 {
 		Species *s1;
 		Particles *p1;
@@ -382,18 +367,6 @@ void Diagnostic1D::calTotalEnergy(SmileiMPI* smpi, vector<Species*>& vecSpecies,
 				totalElectricFieldEnergy += (*Ex1D)(i) * (*Ex1D)(i);
 		}
 
-		smpi->reduce_sum_double(&totalParticleEnergy[0], &totalParticleEnergy_temp[0], n_species);
-		smpi->reduce_sum_double(&totalElectricFieldEnergy, &totalElectricFieldEnergy_temp, 1);
 		totalParticleEnergy = totalParticleEnergy_temp;
 		totalElectricFieldEnergy = totalElectricFieldEnergy_temp;
-
-		if(smpi->isMaster())
-		{
-				ofstream outfile;
-				outfile.open("totalEnergy.txt", ios::app);
-				outfile<<setw(15)<<itime<<setw(15)<<totalElectricFieldEnergy<<setw(15)<<totalParticleEnergy[0]<<setw(15)<<totalParticleEnergy[1]
-							 <<setw(15)<<totalParticleEnergy[0]+totalParticleEnergy[1]<<endl;
-				outfile.close();
-		}
-
 }

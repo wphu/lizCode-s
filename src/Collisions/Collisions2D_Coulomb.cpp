@@ -34,11 +34,6 @@ Collisions2D_Coulomb::Collisions2D_Coulomb(PicParams& params, vector<Species*>& 
     // Calculate total number of bins
     nbins = vecSpecies[0]->bmin.size();
     totbins = nbins;
-    //MPI_Allreduce( smpi->isMaster()?MPI_IN_PLACE:&totbins, &totbins, 1, MPI_INTEGER, MPI_SUM, MPI_COMM_WORLD);
-
-    // if debug requested, prepare hdf5 file
-
-
 }
 
 Collisions2D_Coulomb::~Collisions2D_Coulomb()

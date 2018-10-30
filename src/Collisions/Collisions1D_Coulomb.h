@@ -35,7 +35,7 @@ public:
     virtual double cos_chi(double);
 
 
-    virtual void collide_relativistic(PicParams&, SmileiMPI* smpi, std::vector<Species*>&,int);
+    virtual void collide_relativistic(PicParams&, std::vector<Species*>&,int);
     // non-relativistic case
     virtual void collide(PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies, Diagnostic* diag, int itime);
 

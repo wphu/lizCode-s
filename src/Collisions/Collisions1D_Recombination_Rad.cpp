@@ -174,7 +174,7 @@ void Collisions1D_Recombination_Rad::collide(PicParams& params, ElectroMagn* fie
                 new_particles3.charge(idNew) = s3->species_param.charge;
                 totNCollision++;
 
-                iBin_global = smpi->getDomainLocalMin(0) / params.cell_length[0] + ibin;
+                iBin_global = ibin;
                 diag1D->radiative_energy_collision[n_collisions][iBin_global] += ke_radiative;
             } // end if
         }

@@ -25,10 +25,6 @@ Projector3D1Order::Projector3D1Order (PicParams& params) : Projector3D(params)
 
     one_third = 1.0/3.0;
 
-    i_domain_begin = ;
-    j_domain_begin = ;
-    k_domain_begin = ;
-
     DEBUG("cell_length "<< params.cell_length[0]);
 
 }
@@ -105,10 +101,6 @@ void Projector3D1Order::operator() (Field* rho, Particles &particles, int ipart,
     Sz[1]  = delta;
 
     //cout << "Pos = " << particles.position(0, ipart) << " - i global = " << i << " - i local = " << i-index_domain_begin <<endl;
-
-    int i = ic-i_domain_begin; // index of first point for projection in x
-    int j = jc-j_domain_begin; // index of first point for projection in y
-    int k = kc-k_domain_begin; // index of first point for projection in y
 
     // 1nd order projection for the total charge density
     for (unsigned int iloc=0 ; iloc<2 ; iloc++) 

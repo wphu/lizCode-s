@@ -36,7 +36,7 @@ public :
 
     // calculate velocity and temperature of each species
     // not implemented
-	void calVT(SmileiMPI* smpi, vector<Species*>& vecSpecies, ElectroMagn* EMfields, int itime){};
+	void calVT(vector<Species*>& vecSpecies, ElectroMagn* EMfields, int itime){};
 
 protected :
     double dx, dy, dz;

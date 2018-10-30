@@ -54,8 +54,6 @@ void Interpolator1D3Order::operator() (ElectroMagn* EMfields, Particles &particl
     coeffp_[2]  = dble_1ov6 + 0.5*(xi+xi2-xi3);
     coeffp_[3]  = xi3*dble_1ov6;
 
-    ip_ -= index_domain_begin;
-
     (*ELoc).y = compute(coeffp_, Ey1D,   ip_);  
     (*ELoc).z = compute(coeffp_, Ez1D,   ip_);  
     (*BLoc).x = compute(coeffp_, Bx1D_m, ip_);
@@ -72,8 +70,6 @@ void Interpolator1D3Order::operator() (ElectroMagn* EMfields, Particles &particl
     coeffd_[1]  = dble_2ov3 - xi2 + 0.5*xi3;
     coeffd_[2]  = dble_1ov6 + 0.5*(xi+xi2-xi3);
     coeffd_[3]  = xi3*dble_1ov6;
-
-    id_ -= index_domain_begin;
 
     (*ELoc).x = compute(coeffd_, Ex1D,   id_);  
     (*BLoc).y = compute(coeffd_, By1D_m, id_);  

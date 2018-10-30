@@ -19,8 +19,6 @@ Projector1D2Order::Projector1D2Order (PicParams& params) : Projector1D(params)
     dx_inv_  = 1.0/params.cell_length[0];
     dx_ov_dt = params.cell_length[0] / params.timestep;
 
-    index_domain_begin = ;
-
     DEBUG("cell_length "<< params.cell_length[0]);
 
 }
@@ -81,8 +79,6 @@ void Projector1D2Order::operator() (Field* rho, Particles &particles, int ipart,
 
     //cout << "Pos = " << particles.position(0, ipart) << " - i global = " << i << " - i local = " << i-index_domain_begin <<endl;
 
-    i -= index_domain_begin;
-
     // 2nd order projection for the total density
     (*rho1D)( i-1)  += 0.5 * (xjmxi2-xjmxi+0.25) * rho_j;
     (*rho1D)( i  )  += (0.75-xjmxi2)             * rho_j ;
@@ -114,8 +110,6 @@ void Projector1D2Order::operator() (Field* rho, Particles &particles, int ipart)
     xjmxi2 = xjmxi*xjmxi;                  // square of the normalized distance to the nearest grid point
 
     //cout << "Pos = " << particles.position(0, ipart) << " - i global = " << i << " - i local = " << i-index_domain_begin <<endl;
-
-    i -= index_domain_begin;
 
     // 2nd order projection for the total density
     (*rho1D)( i-1)  += 0.5 * (xjmxi2-xjmxi+0.25) * rho_j;

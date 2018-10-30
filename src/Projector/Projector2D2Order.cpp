@@ -23,9 +23,6 @@ Projector2D2Order::Projector2D2Order (PicParams& params) : Projector2D(params)
 
     one_third = 1.0/3.0;
 
-    i_domain_begin = ;
-    j_domain_begin = ;
-
     DEBUG("cell_length "<< params.cell_length[0]);
 
 }
@@ -176,10 +173,6 @@ void Projector2D2Order::operator() (ElectroMagn* EMfields, Particles &particles,
     // ---------------------------
     // Calculate the total current
     // ---------------------------
-    ipo -= i_domain_begin;
-    ip  -= i_domain_begin;
-    jpo -= j_domain_begin;
-    jp  -= j_domain_begin;
 
     for (unsigned int i=0 ; i<5 ; i++) {
         unsigned int iloc = i+ipo-2;
@@ -325,10 +318,6 @@ void Projector2D2Order::operator() (Field* Jx, Field* Jy, Field* Jz, Field* rho,
     // ---------------------------
     // Calculate the total current
     // ---------------------------
-    ipo -= i_domain_begin;
-    ip  -= i_domain_begin;
-    jpo -= j_domain_begin;
-    jp  -= j_domain_begin;
 
     for (unsigned int i=0 ; i<5 ; i++) {
         unsigned int iloc = i+ipo-2;
@@ -378,9 +367,6 @@ void Projector2D2Order::operator() (Field* rho, Particles &particles, int ipart)
     Sy[2]  = 0.5 * (delta2+delta+0.25);
 
     //cout << "Pos = " << particles.position(0, ipart) << " - i global = " << i << " - i local = " << i-index_domain_begin <<endl;
-
-    int i = ic-i_domain_begin-1; // index of first point for projection in x
-    int j = jc-j_domain_begin-1; // index of first point for projection in y
 
     // 2nd order projection for the total charge density
     for (unsigned int iloc=0 ; iloc<3 ; iloc++) {
@@ -485,8 +471,7 @@ void Projector2D2Order::operator() (double* Jx, double* Jy, double* Jz, double* 
     // ---------------------------
     // Calculate the total current
     // ---------------------------
-    ipo -= i_domain_begin + bin;
-    jpo -= j_domain_begin;
+
     // i =0
     {
 	iloc = (ipo-2)*b_dim1;
