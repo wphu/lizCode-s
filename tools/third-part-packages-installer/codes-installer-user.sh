@@ -19,10 +19,10 @@ else
     make
     make install
     cd ..
-    export PATH=${install_path_header}/${install_path}:$PATH
-    which mpicc
     #rm -rf ${packages[i]}
 fi
+export PATH=${install_path_header}/${install_path}/bin:$PATH
+which mpicc
 
 
 # install hdf5
@@ -38,7 +38,7 @@ else
     tar -xvf ${package}.tar
     tar -xvf ${package}.gz
     cd ${package}
-    ./configure --enable-parallel --prefix=${install_path_header}/${install_path}
+    ./configure --prefix=${install_path_header}/${install_path}
     make
     make install
     cd ..
@@ -86,6 +86,8 @@ fi
 
 # install netcdf(netcdf-c)
 CC=gcc
+export CPPFLAGS="-I${install_path_header}/hdf5/include"
+export LDFLAGS="-L${install_path_header}/hdf5/lib"
 package=netcdf-4.6.0
 install_path=netcdf
 if [ -d ${install_path_header}/${install_path} ];then
@@ -96,15 +98,20 @@ else
     tar -xvf ${package}.tar
     tar -xvf ${package}.gz
     cd ${package}
-    ./configure CPPFLAGS=-I${install_path_header}/hdf5/include LDFLAGS=-L${install_path_header}/hdf5/lib --prefix=${install_path_header}/${install_path}
+    ./configure --prefix=${install_path_header}/${install_path}
     make
     make install
     cd ..
+    #rm -rf ${package}
 fi
-
+export CPPFLAGS=""
+export LDFLAGS=""
 
 # install netcdf-cxx
 CC=gcc
+CXX=g++
+export CPPFLAGS="-I${install_path_header}/hdf5/include -I${install_path_header}/netcdf/include"
+export LDFLAGS="-L${install_path_header}/hdf5/lib -L${install_path_header}/netcdf/lib"
 package=netcdf-cxx4-4.3.0
 install_path=netcdf
 if [ -d ${install_path_header}/${install_path} ];then
@@ -112,17 +119,20 @@ if [ -d ${install_path_header}/${install_path} ];then
     tar -xvf ${package}.tar
     tar -xvf ${package}.gz
     cd ${package}
-    ./configure CC=icc CPPFLAGS=-I${install_path_header}/hdf5/include -I${install_path_header}/netcdf/include LDFLAGS=-L${install_path_header}/hdf5/lib\ -L${install_path_header}/netcdf/lib --prefix=${install_path_header}/${install_path}
+    ./configure --prefix=${install_path_header}/${install_path}
     make
     make install
     cd ..
+    #rm -rf ${package}
 fi
+export CPPFLAGS=""
+export LDFLAGS=""
 
 # install SuperLU-4.3
 CC=compiler_c
 FC=compiler_fortran
 package=superlu_4.3
-install_path=superlu
+install_path=SuperLU
 if [ -d ${install_path_header}/${install_path} ];then
     echo "${package} has been installed"
     continue
@@ -130,6 +140,7 @@ else
     tar -xvf ${package}.tar.gz
     tar -xvf ${package}.tar
     tar -xvf ${package}.gz
+    mv SuperLU_4.3 ${package}
     cd ${package}
     ./configure --prefix=${install_path_header}/${install_path}
     make
