@@ -146,8 +146,11 @@ export CPPFLAGS=""
 export LDFLAGS=""
 
 # install lapack
-FC=${compiler_fortran}
-export FFLAGS=-fPIC
+FORTRAN=${compiler_fortran}
+export FFLAGS="-fPIC"
+OPTS="-O2 -frecursive"
+DRVOPTS=${OPTS}
+NOOPT="-O0 -frecursive"
 package=lapack-3.8.0
 install_path=lapack
 if [ -d ${install_path_header}/${install_path} ];then
@@ -166,6 +169,30 @@ else
     cd ../..
 fi
 export FFLAGS=""
+
+# install OpenBLAS
+FC=${compiler_fortran}
+F77=${compiler_fortran}
+export FFLAGS=-fPIC
+package=OpenBLAS-0.2.20
+install_path=OpenBLAS
+if [ -d ${install_path_header}/${install_path} ];then
+    echo "${package} has been installed"
+else
+    tar -xvf ${package}.tar.gz
+    tar -xvf ${package}.tar
+    tar -xvf ${package}.gz
+    cd ${package}
+    mkdir build
+    cd build
+    mkdir ${install_path_header}/${install_path}
+    cmake ../ -DCMAKE_INSTALL_PREFIX=${install_path_header}/${install_path}
+    make
+    make install
+    cd ../..
+fi
+export FFLAGS=""
+
 
 # install SuperLU
 export CC=${compiler_c}
@@ -281,7 +308,8 @@ else
     tar -xvf ${package}.gz
     mv SuiteSparse ${package}
     cd ${package}
-    make BLAS=${install_path_header}/lapack/lib/libblas.a LAPACK=${install_path_header}/lapack/lib/liblapack.a
+    make BLAS="${install_path_header}/lapack/lib/libblas.a -lgfortran" LAPACK=${install_path_header}/lapack/lib/liblapack.a
+    #make BLAS="/home/huwanpeng/source-codes/lapack-3.8.0/librefblas.a -lgfortran" LAPACK=/home/huwanpeng/source-codes/lapack-3.8.0/liblapack.a
     rm -rf ${install_path_header}/${install_path} 
     mkdir ${install_path_header}/${install_path}
     cp -r bin ${install_path_header}/${install_path}/bin
@@ -289,5 +317,5 @@ else
     cp -r include ${install_path_header}/${install_path}/include
     cd ..
 fi
-
-
+export CFLAGS=""
+export CPPFLAGS=""
