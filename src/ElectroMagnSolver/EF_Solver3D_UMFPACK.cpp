@@ -32,17 +32,11 @@ EF_Solver3D_UMFPACK::~EF_Solver3D_UMFPACK()
 
 void EF_Solver3D_UMFPACK::operator() (ElectroMagn* fields)
 {
-
-}
-
-
-
-void EF_Solver3D_UMFPACK::operator() (ElectroMagn* fields)
-{
     Field3D* Ex3D = static_cast<Field3D*>(fields->Ex_);
     Field3D* Ey3D = static_cast<Field3D*>(fields->Ey_);
     Field3D* Ez3D = static_cast<Field3D*>(fields->Ez_);
     Field3D* rho3D= static_cast<Field3D*>(fields->rho_);
+    Field3D* phi3D= static_cast<Field3D*>(fields->phi_);
 
     solve_UMFPACK(rho3D, phi3D);
     solve_Exyz(phi3D, Ex3D, Ey3D, Ez3D);

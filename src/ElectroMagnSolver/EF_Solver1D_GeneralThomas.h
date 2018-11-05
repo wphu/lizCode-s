@@ -23,7 +23,7 @@ public:
     virtual ~EF_Solver1D_GeneralThomas();
 
     //! Overloading of () operator
-    virtual void operator()( ElectroMagn* fields){};
+    virtual void operator()( ElectroMagn* fields);
 
     void initGeneralThomas();
     void solve_GeneralThomas(Field* rho, Field* phi);

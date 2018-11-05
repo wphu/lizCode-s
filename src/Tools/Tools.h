@@ -27,28 +27,21 @@
 
 #include <iostream>
 
-#include <mpi.h>
-
 
 #define __header(__msg,__txt) std::cout << "\t[" << __msg << "] " << __FILE__ << ":" << __LINE__ << " (" \
 << __FUNCTION__ << ") " << __txt << std::endl
 
-#define MESSAGE1(__txt)  {int __rk; MPI_Comm_rank( MPI_COMM_WORLD, &__rk ); if (__rk==0) { std::cout << " ";  std::cout << __txt << std::endl;};}
-#define MESSAGE2(__val,__txt) {int __rk; MPI_Comm_rank( MPI_COMM_WORLD, &__rk ); if (__rk==0) {for (int __i=0;__i<__val;__i++) std::cout << "\t";}; MESSAGE1(__txt);}
+#define MESSAGE1(__txt)  std::cout << " ";  std::cout << __txt << std::endl;
 
 #define MESSAGE3(arg1,arg2,arg3,...) arg3
-#define MESSAGE4(...) MESSAGE3(__VA_ARGS__,MESSAGE2,MESSAGE1,)
+#define MESSAGE4(...) MESSAGE3(__VA_ARGS__,MESSAGE1,)
 #define MESSAGE(...) MESSAGE4(__VA_ARGS__)(__VA_ARGS__)
 
 #define __PRINTLINE(__num) {MESSAGE(std::string(__num,'-'))}
 
 #define TITLE(...) {MESSAGE(std::endl); MESSAGE(__VA_ARGS__); __PRINTLINE(80);}
 
-// ATTENTION: this costs a lot! use with care!
-#define MESSAGEALL1(__txt)  {int __rk; MPI_Comm_rank( MPI_COMM_WORLD, &__rk ); \
-int __sz; MPI_Comm_size( MPI_COMM_WORLD, &__sz ); \
-for (int __i=0;__i<__sz;__i++ ) {\
-if (__i==__rk) {std::cout << "Proc [" << __i << "] " <<__txt << std::endl;} MPI_Barrier( MPI_COMM_WORLD );}}
+
 
 
 #define MESSAGEALL2(__val,__txt) {for (int __i=0;__i<__val;__i++) std::cout << "\t"; MESSAGEALL1(__txt);}
@@ -56,17 +49,8 @@ if (__i==__rk) {std::cout << "Proc [" << __i << "] " <<__txt << std::endl;} MPI_
 #define MESSAGEALL4(...) MESSAGEALL3(__VA_ARGS__,MESSAGEALL2,MESSAGEALL1,)
 #define MESSAGEALL(...) MESSAGEALL4(__VA_ARGS__)(__VA_ARGS__)
 
-#define WARNING(__txt) {int __rk; MPI_Comm_rank( MPI_COMM_WORLD, &__rk ); if (__rk==0) {__header("WARNING", __txt);}}
+#define WARNING(__txt) __header("WARNING", __txt);
 
-// ATTENTION: this costs a lot! use with care!
-#define WARNINGALL(__txt) {int __rk; MPI_Comm_rank( MPI_COMM_WORLD, &__rk ); int __sz; MPI_Comm_size( MPI_COMM_WORLD, &__sz ); for (int __i=0;__i<__sz;__i++ ) {if (__i==__rk) {__header("WARNING proc "<<__i, __txt);} MPI_Barrier( MPI_COMM_WORLD );}}
-
-
-#define PMESSAGE1(rank, __txt)  {std::cout << __FILE__ << ":" << __LINE__ << "[Process " << rank << "] : " << __txt << std::endl;}
-#define PMESSAGE2(__val,rank,__txt) {for (int __i=0;__i<__val;__i++) std::cout << "\t"; std::cout << "[Process " << rank << "], " << "[" << __val << "] " << __txt << std::endl;}
-#define PMESSAGE3(arg1,arg2,arg3,arg4,...) arg4
-#define PMESSAGE4(...) PMESSAGE3(__VA_ARGS__,PMESSAGE2,PMESSAGE1,)
-#define PMESSAGE(...) PMESSAGE4(__VA_ARGS__)(__VA_ARGS__)
 
 
 #ifdef  __DEBUG
@@ -80,12 +64,11 @@ extern int debug_level;
 #define DEBUG4(...) DEBUG3(__VA_ARGS__,DEBUG2,DEBUG1,)
 #define DEBUG(...) DEBUG4(__VA_ARGS__)(__VA_ARGS__)
 
-#define ERROR(__txt) {int __rk; MPI_Comm_rank( MPI_COMM_WORLD, &__rk ); __header("ERROR proc "<<__rk, __txt); MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);}
+#define ERROR(__txt) __header("ERROR proc "<<__rk, __txt);
 
 #define DEBUGEXEC(...) __VA_ARGS__
 #define RELEASEEXEC(...)
 
-#define HEREIAM(__txt) {const int __num_minus=40; int __rk; MPI_Comm_rank( MPI_COMM_WORLD, &__rk ); for(int __i=0;__i<__num_minus;__i++) {std::cout << "-";}; std::cout << "> " << __rk << " " << __FILE__ << ":" << __LINE__ << " (" << __FUNCTION__ << ") " << __txt << " <" ; for(int __i=0;__i<__num_minus;__i++) {std::cout << "-";}; std::cout << std::endl; }
 
 #else // __DEBUG
 
@@ -93,7 +76,6 @@ extern int debug_level;
 #define DEBUGEXEC(...)
 #define RELEASEEXEC(...) __VA_ARGS__
 
-#define ERROR(__txt) {__header("ERROR", __txt); MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);}
 
 #define HEREIAM(...)
 

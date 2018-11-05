@@ -30,12 +30,6 @@ EF_Solver3D_SLU::~EF_Solver3D_SLU()
 {
 }
 
-void EF_Solver3D_SLU::operator() (ElectroMagn* fields)
-{
-
-}
-
-
 
 void EF_Solver3D_SLU::operator() (ElectroMagn* fields)
 {
@@ -44,6 +38,7 @@ void EF_Solver3D_SLU::operator() (ElectroMagn* fields)
     Field3D* Ez3D = static_cast<Field3D*>(fields->Ez_);
 
     Field3D* rho3D           = static_cast<Field3D*>(fields->rho_);
+    Field3D* phi3D           = static_cast<Field3D*>(fields->phi_);
 
     solve_SLU(rho3D, phi3D);
     solve_Exyz(phi3D, Ex3D, Ey3D, Ez3D);
@@ -369,7 +364,7 @@ void EF_Solver3D_SLU::initSLU()
 
     dgssvx(&options, &A, perm_c, perm_r, etree, equed, R, C,
            &L, &U, work, lwork, &B, &X, &rpg, &rcond, ferr, berr,
-           &mem_usage, &stat, &info);
+           &Glu, &mem_usage, &stat, &info);
 
     cout<<"end factorizing......"<<endl;
 
@@ -433,7 +428,7 @@ void EF_Solver3D_SLU::solve_SLU(Field* rho, Field* phi)
     StatInit(&stat);
     dgssvx(&options, &A, perm_c, perm_r, etree, equed, R, C,
            &L, &U, work, lwork, &B, &X, &rpg, &rcond, ferr, berr,
-           &mem_usage, &stat, &info);
+           &Glu, &mem_usage, &stat, &info);
 
     //printf("Triangular solve: dgssvx() returns info %d\n", info);
 

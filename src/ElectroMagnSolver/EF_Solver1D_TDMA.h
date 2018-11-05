@@ -16,7 +16,7 @@ public:
     virtual ~EF_Solver1D_TDMA();
 
     //! Overloading of () operator
-    virtual void operator()( ElectroMagn* fields){};
+    virtual void operator()( ElectroMagn* fields);
 
     void initTDMA();
     void solve_TDMA(Field* rho, Field* phi);

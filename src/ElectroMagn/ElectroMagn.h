@@ -6,7 +6,6 @@
 #include <map>
 
 #include "Tools.h"
-#include "Profile.h"
 
 
 class PicParams;

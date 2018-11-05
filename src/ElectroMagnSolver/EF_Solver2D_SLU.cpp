@@ -29,19 +29,13 @@ EF_Solver2D_SLU::~EF_Solver2D_SLU()
 {
 }
 
-void EF_Solver2D_SLU::operator() ( ElectroMagn* fields )
-{
-
-}
-
-
-
 void EF_Solver2D_SLU::operator() (ElectroMagn* fields)
 {
     Field2D* Ex2D = static_cast<Field2D*>(fields->Ex_);
     Field2D* Ey2D = static_cast<Field2D*>(fields->Ey_);
 
     Field2D* rho2D           = static_cast<Field2D*>(fields->rho_);
+    Field2D* phi2D           = static_cast<Field2D*>(fields->phi_);
 
     solve_SLU(rho2D, phi2D);
     solve_Exy(phi2D, Ex2D, Ey2D);
@@ -305,7 +299,7 @@ void EF_Solver2D_SLU::initSLU()
 
     dgssvx(&options, &A, perm_c, perm_r, etree, equed, R, C,
            &L, &U, work, lwork, &B, &X, &rpg, &rcond, ferr, berr,
-           &mem_usage, &stat, &info);
+           &Glu, &mem_usage, &stat, &info);
 
     cout<<"end factorizing......"<<endl;
 
@@ -361,7 +355,7 @@ void EF_Solver2D_SLU::solve_SLU(Field* rho, Field* phi)
     StatInit(&stat);
     dgssvx(&options, &A, perm_c, perm_r, etree, equed, R, C,
            &L, &U, work, lwork, &B, &X, &rpg, &rcond, ferr, berr,
-           &mem_usage, &stat, &info);
+           &Glu, &mem_usage, &stat, &info);
 
     //printf("Triangular solve: dgssvx() returns info %d\n", info);
 

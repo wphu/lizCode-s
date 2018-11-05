@@ -2,6 +2,7 @@
 #define SOLVER_H
 
 #include "PicParams.h"
+#include "Field.h"
 
 class ElectroMagn;
 
