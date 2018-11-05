@@ -50,18 +50,18 @@ void SmileiIO::createFieldsGroup( ElectroMagn* fields )
     //addField(fields->rho_global);
     //addField(fields->phi_global);
     //addField(fields->Ex_global);
-    addField(fields->rho_global_avg);
-    addField(fields->phi_global_avg);
-    addField(fields->Ex_global_avg);
+    addField(fields->rho_avg);
+    addField(fields->phi_avg);
+    addField(fields->Ex_avg);
     for(int i = 0; i < fields->rho_s.size(); i++)
     {
         //addField(fields->rho_s_global[i]);
-        addField(fields->rho_s_global_avg[i]);
-        addField(fields->Vx_s_global_avg[i]);
-        addField(fields->Vy_s_global_avg[i]);
-        addField(fields->Vz_s_global_avg[i]);
-        addField(fields->Vp_s_global_avg[i]);
-        addField(fields->T_s_global_avg[i]);
+        addField(fields->rho_s_avg[i]);
+        addField(fields->Vx_s_avg[i]);
+        addField(fields->Vy_s_avg[i]);
+        addField(fields->Vz_s_avg[i]);
+        addField(fields->Vp_s_avg[i]);
+        addField(fields->T_s_avg[i]);
 
     }
     fieldsGroup.dataset_id.resize( fieldsGroup.dataset_stringName.size() );

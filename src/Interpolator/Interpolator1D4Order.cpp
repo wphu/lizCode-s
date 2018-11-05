@@ -9,7 +9,7 @@
 
 using namespace std;
 
-Interpolator1D4Order::Interpolator1D4Order(PicParams &params) : Interpolator1D(params, smpi)
+Interpolator1D4Order::Interpolator1D4Order(PicParams &params) : Interpolator1D(params)
 {
     dx_inv_ = 1.0/params.cell_length[0];
 

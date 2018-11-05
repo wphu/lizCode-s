@@ -1,13 +1,13 @@
 #ifndef DIAGNOSTIC_H
 #define DIAGNOSTIC_H
 
+#include <iostream>
+#include <vector>
+
 #include "PicParams.h"
-#include "SmileiMPI.h"
 #include "PSI.h"
 #include "Grid.h"
 
-#include <iostream>
-#include <vector>
 
 using namespace std;
 

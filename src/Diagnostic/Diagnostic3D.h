@@ -3,7 +3,6 @@
 
 #include "Diagnostic.h"
 #include "PicParams.h"
-#include "SmileiMPI.h"
 #include "PSI3D.h"
 #include "Grid3D.h"
 #include "Particles.h"

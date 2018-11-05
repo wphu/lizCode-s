@@ -1,15 +1,11 @@
 #include "ElectroMagn2D.h"
 
 #include <cmath>
-
 #include <iostream>
 #include <sstream>
 
 #include "PicParams.h"
 #include "Field2D.h"
-
-
-#include "Profile.h"
 
 using namespace std;
 
@@ -40,7 +36,6 @@ ElectroMagn(params, input_data)
 
     dimPrim.resize( nDim_field );
     dimDual.resize( nDim_field );
-    dim_global.resize( nDim_field );
 
     // Dimension of the primal and dual grids
     for (size_t i=0 ; i<nDim_field ; i++) {
@@ -50,8 +45,6 @@ ElectroMagn(params, input_data)
         // + Ghost domain
         dimPrim[i] += 2*oversize[i];
         dimDual[i] += 2*oversize[i];
-
-        dim_global[i] = n_space_global[i] + 1;
     }
     // number of nodes of the primal and dual grid in the x-direction
     nx_p = n_space[0]+1+2*oversize[0];

@@ -19,20 +19,20 @@ Timer::~Timer()
 
 void Timer::init(string name)
 {
-    last_start_ = MPI_Wtime();
+    last_start_ = clock();
     name_ = name;
 }
 
 
 void Timer::update()
 {
-    time_acc_ +=  MPI_Wtime()-last_start_;
-    last_start_ = MPI_Wtime();
+    time_acc_ +=  clock()-last_start_;
+    last_start_ = clock();
 }
 
 void Timer::restart()
 {
-    last_start_ = MPI_Wtime();
+    last_start_ = clock();
 }
 
 void Timer::print(double tot)

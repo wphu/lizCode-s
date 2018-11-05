@@ -1,5 +1,4 @@
 #include "PartSource2D_Load.h"
-#include "SmileiMPI_Cart2D.h"
 #include "Field2D.h"
 
 #include <cmath>

@@ -3,7 +3,6 @@
 
 #include "Field.h"
 #include "PicParams.h"
-#include "SmileiMPI.h"
 
 
 class ElectroMagn;

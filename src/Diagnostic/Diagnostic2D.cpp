@@ -1,9 +1,9 @@
+#include <algorithm>
+
 #include "Diagnostic2D.h"
 #include "Field2D.h"
 #include "PSI2D.h"
-#include "SmileiMPI_Cart2D.h"
 
-#include <algorithm>
 
 Diagnostic2D::Diagnostic2D(PicParams& params, Grid* grid, ElectroMagn* EMfields, vector<PSI*>& vecPSI) :
 Diagnostic(params)

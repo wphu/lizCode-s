@@ -4,14 +4,13 @@
 #include <vector>
 #include <string>
 
+#include "Grid.h"
 #include "Particles.h"
 #include "PicParams.h"
 #include "Pusher.h"
-//#include "PartBoundCond.h"
 #include "PicParams.h"
 #include "Pusher.h"
 #include "ElectroMagn.h"
-#include "Profile.h"
 
 class ElectroMagn;
 class Pusher;
@@ -196,20 +195,6 @@ private:
 
     //! Type of density profile ("nb" or "charge")
     std::string densityProfileType;
-
-    //! charge profile
-    Profile *chargeProfile;
-
-    //! density profile
-    Profile *densityProfile;
-
-    //! vector of velocity profiles (vx, vy, vz)
-    std::vector<Profile *> velocityProfile;
-
-    //! vector of temperature profiles (Tx, Ty, Tz)
-    std::vector<Profile *> temperatureProfile;
-
-    Profile *ppcProfile;
 
     //! 2 times pi
     double PI2;

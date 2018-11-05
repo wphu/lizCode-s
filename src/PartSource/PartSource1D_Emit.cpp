@@ -1,5 +1,4 @@
 #include "PartSource1D_Emit.h"
-#include "SmileiMPI_Cart1D.h"
 #include "Field1D.h"
 
 #include <cmath>

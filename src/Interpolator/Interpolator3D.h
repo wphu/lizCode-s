@@ -1,9 +1,7 @@
 #ifndef INTERPOLATOR3D_H
 #define INTERPOLATOR3D_H
 
-
 #include "Interpolator.h"
-#include "SmileiMPI_Cart3D.h"
 
 //  --------------------------------------------------------------------------------------------------------------------
 //! Class Interpolator 3D

@@ -17,7 +17,6 @@
 #include "ElectroMagn.h"
 #include "Interpolator.h"
 #include "InterpolatorFactory.h"
-#include "Profile.h"
 #include "Grid.h"
 #include "Grid2D.h"
 #include "Projector.h"

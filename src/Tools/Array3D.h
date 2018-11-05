@@ -4,6 +4,8 @@
 #include <vector>
 #include <iostream>
 
+#include "Tools.h"
+
 // Class Array3D: template class as 3D array
 template<typename T>
 class Array3D

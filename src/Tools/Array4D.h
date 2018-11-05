@@ -2,7 +2,6 @@
 #define ARRAY4D_H
 
 #include <cmath>
-
 #include <vector>
 #include <cstdlib>
 #include <string>

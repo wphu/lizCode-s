@@ -8,8 +8,6 @@
 
 #include "PicParams.h"
 #include "Field1D.h"
-
-#include "Profile.h"
 #include "MF_Solver1D_Yee.h"
 
 using namespace std;
@@ -37,7 +35,6 @@ ElectroMagn(params, input_data)
     // dimPrim/dimDual = nx_p/nx_d
     dimPrim.resize( nDim_field );
     dimDual.resize( nDim_field );
-    dim_global.resize( nDim_field );
     for (size_t i=0 ; i<nDim_field ; i++) {
         // Standard scheme
         dimPrim[i] = n_space[i]+1;
@@ -45,7 +42,6 @@ ElectroMagn(params, input_data)
         // + Ghost domain
         dimPrim[i] += 2*oversize[i];
         dimDual[i] += 2*oversize[i];
-        dim_global[i] = n_space_global[i] + 1;
     }
 
     // Allocation of the EM fields
@@ -399,28 +395,4 @@ void ElectroMagn1D::computeTotalRhoJ()
 // --------------------------------------------------------------------------
 void ElectroMagn1D::computePoynting() {
 
-    // Western border (Energy injected = +Poynting)
-    if (isWestern) {
-        unsigned int iEy=istart[0][Ey_->isDual(0)];
-        unsigned int iBz=istart[0][Bz_m->isDual(0)];
-        unsigned int iEz=istart[0][Ez_->isDual(0)];
-        unsigned int iBy=istart[0][By_m->isDual(0)];
-
-        poynting_inst[0][0]=0.5*timestep*((*Ey_)(iEy) * ((*Bz_m)(iBz) + (*Bz_m)(iBz+1)) -
-                                          (*Ez_)(iEz) * ((*By_m)(iBy) + (*By_m)(iBy+1)));
-        poynting[0][0] += poynting_inst[0][0];
-    }
-
-    // Eastern border (Energy injected = -Poynting)
-    if (isEastern) {
-        unsigned int iEy=istart[0][Ey_->isDual(0)]  + bufsize[0][Ey_->isDual(0)]-1;
-        unsigned int iBz=istart[0][Bz_m->isDual(0)] + bufsize[0][Bz_m->isDual(0)]-1;
-        unsigned int iEz=istart[0][Ez_->isDual(0)]  + bufsize[0][Ez_->isDual(0)]-1;
-        unsigned int iBy=istart[0][By_m->isDual(0)] + bufsize[0][By_m->isDual(0)]-1;
-
-        poynting_inst[1][0]=0.5*timestep*((*Ey_)(iEy) * ((*Bz_m)(iBz-1) + (*Bz_m)(iBz)) -
-                                          (*Ez_)(iEz) * ((*By_m)(iBy-1) + (*By_m)(iBy)));
-        poynting[1][0] -= poynting_inst[1][0];
-
-    }
 }

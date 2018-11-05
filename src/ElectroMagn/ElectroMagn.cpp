@@ -7,7 +7,6 @@
 #include "Species.h"
 #include "Projector.h"
 #include "Field.h"
-#include "Profile.h"
 #include "SolverFactory.h"
 
 using namespace std;
@@ -23,7 +22,6 @@ n_species(params.species_param.size()),
 nDim_field(params.nDim_field),
 cell_volume(params.cell_volume),
 n_space(params.n_space),
-n_space_global(params.n_space_global),
 oversize(params.oversize),
 avg_step(params.ntime_step_avg),
 dump_step(params.dump_step)

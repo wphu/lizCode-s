@@ -10,7 +10,7 @@ EF_Solver1D_TDMA_imp::EF_Solver1D_TDMA_imp(PicParams &params, int nx_sou_left)
     dx = params.cell_length[0];
     dx_inv_ = 1.0 / dx;
     dx_sq = dx * dx;
-    nx = params.n_space_global[0]+1;
+    nx = params.n_space[0]+1;
     nx_source_left = nx_sou_left;
     dt = params.timestep;
 
@@ -112,8 +112,8 @@ void EF_Solver1D_TDMA_imp::initTDMA(PicParams &params)
 
 void EF_Solver1D_TDMA_imp::solve_TDMA_imp(ElectroMagn* fields)
 {
-    Field1D* rho1D = static_cast<Field1D*>(fields->rho_global);
-    Field1D* phi1D = static_cast<Field1D*>(fields->phi_global);
+    Field1D* rho1D = static_cast<Field1D*>(fields->rho_);
+    Field1D* phi1D = static_cast<Field1D*>(fields->phi_);
     double ephi_inv;
     double chi00;
     double charge_over_mass_;
@@ -124,7 +124,7 @@ void EF_Solver1D_TDMA_imp::solve_TDMA_imp(ElectroMagn* fields)
         chi00 = 0.0;
         for(int iS = 0; iS < fields->n_species; iS++)
         {
-            chi00 += factor_chi[iS] * (*fields->rho_s_global[iS])(i+nx_source_left);
+            chi00 += factor_chi[iS] * (*fields->rho_s[iS])(i+nx_source_left);
         }
         ephi_inv = const_ephi0_inv / ( 1.0 + chi00 );
         f[i] = -dx_sq * ephi_inv * (*rho1D)(i+nx_source_left);

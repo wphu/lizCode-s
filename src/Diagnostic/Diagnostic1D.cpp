@@ -1,6 +1,5 @@
 #include "Diagnostic1D.h"
 #include "Species.h"
-#include "SmileiMPI_Cart1D.h"
 #include "ElectroMagn.h"
 #include "Collisions.h"
 #include <iomanip>

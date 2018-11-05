@@ -6,9 +6,10 @@
 #include <map>
 
 #include "Tools.h"
+#include "PicParams.h"
 
 
-class PicParams;
+class InputData;
 class Species;
 class Projector;
 class Field;

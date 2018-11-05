@@ -34,7 +34,7 @@ py_namelist(NULL)
     // Running the namelists
     pyRunScript("############### BEGIN USER NAMELISTS ###############\n");
     for (vector<string>::iterator it=namelistsFiles.begin(); it!=namelistsFiles.end(); it++) {
-        MESSAGE(1,"Reading file " << *it);
+        MESSAGE("Reading file " << *it);
         string strNamelist="";
 
         ifstream istr(it->c_str());
@@ -68,7 +68,7 @@ void InputData::pyRunScript(string command, string name)
 {
     PyTools::checkPyError();
     namelist+=command;
-    if (name.size()>0)  MESSAGE(1,"Passing to python " << name);
+    if (name.size()>0)  MESSAGE("Passing to python " << name);
     DEBUG(">>>>>>>>>>>>>>> passing this to python:\n" <<command);
     int retval=PyRun_SimpleString(command.c_str());
     DEBUG("<<<<<<<<<<<<<<< from " << name);
@@ -146,18 +146,18 @@ void InputData::cleanup() {
 
     // call cleanup function from the user namelist (it can be used to free some memory
     // from the python side) while keeping the interpreter running
-    MESSAGE(1,"Checking for cleanup() function:");
+    MESSAGE("Checking for cleanup() function:");
     PyTools::runPyFunction("cleanup");
     // this will reset error in python in case cleanup doesn't exists
     PyErr_Clear();
 
     // this function is defined in the Python/pyontrol.py file and should return false if we can close
     // the python interpreter
-    MESSAGE(1,"Calling python _keep_python_running() :");
+    MESSAGE("Calling python _keep_python_running() :");
     if (PyTools::runPyFunction<bool>("_keep_python_running")) {
-        MESSAGE(2,"Keeping Python interpreter alive");
+        MESSAGE("Keeping Python interpreter alive");
     } else {
-        MESSAGE(2,"Closing Python");
+        MESSAGE("Closing Python");
         PyErr_Print();
         Py_Finalize();
     }

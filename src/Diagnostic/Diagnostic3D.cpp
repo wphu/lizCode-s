@@ -1,6 +1,5 @@
 #include "Diagnostic3D.h"
 #include "PSI3D.h"
-#include "SmileiMPI_Cart3D.h"
 
 #include <algorithm>
 

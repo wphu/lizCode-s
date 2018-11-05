@@ -661,23 +661,23 @@ void PicParams::print()
     // Numerical parameters
     // ---------------------
     MESSAGE("Numerical parameters");
-    MESSAGE(1,"Geometry : " << geometry)
-    MESSAGE(1,"(nDim_particle, nDim_field) : (" << nDim_particle << ", "<< nDim_field << ")");
-    MESSAGE(1,"Interpolation_order : " <<  interpolation_order);
-    MESSAGE(1,"(n_time,   timestep) : (" << n_time << ", " << timestep << ")");
-    MESSAGE(1,"           timestep  = " << timestep/dtCFL << " * CFL");
+    MESSAGE("Geometry : " << geometry)
+    MESSAGE("(nDim_particle, nDim_field) : (" << nDim_particle << ", "<< nDim_field << ")");
+    MESSAGE("Interpolation_order : " <<  interpolation_order);
+    MESSAGE("(n_time,   timestep) : (" << n_time << ", " << timestep << ")");
+    MESSAGE("           timestep  = " << timestep/dtCFL << " * CFL");
 
     for ( unsigned int i=0 ; i<sim_length.size() ; i++ ){
-        MESSAGE(1,"dimension " << i << " - (res_space, sim_length) : (" << res_space[i] << ", " << sim_length[i] << ")");
-        MESSAGE(1,"            - (n_space,  cell_length) : " << "(" << n_space[i] << ", " << cell_length[i] << ")");
+        MESSAGE("dimension " << i << " - (res_space, sim_length) : (" << res_space[i] << ", " << sim_length[i] << ")");
+        MESSAGE("            - (n_space,  cell_length) : " << "(" << n_space[i] << ", " << cell_length[i] << ")");
     }
 
     // Plasma related parameters
     // -------------------------
     MESSAGE("Plasma related parameters");
-    MESSAGE(1,"n_species       : " << species_param.size());
+    MESSAGE("n_species       : " << species_param.size());
     for ( unsigned int i=0 ; i<species_param.size() ; i++ ) {
-        MESSAGE(1,"            species_type : "<< species_param[i].species_type);
+        MESSAGE("            species_type : "<< species_param[i].species_type);
     }
 
 

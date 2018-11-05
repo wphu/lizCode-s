@@ -111,10 +111,10 @@ void Interpolator2D4Order::operator() (ElectroMagn* EMfields, Particles &particl
 
     //!\todo CHECK if this is correct for both primal & dual grids !!!
     // First index for summation
-    ip_ = ip_ - 2 - i_domain_begin;
-    id_ = id_ - 2 - i_domain_begin;
-    jp_ = jp_ - 2 - j_domain_begin;
-    jd_ = jd_ - 2 - j_domain_begin;
+    ip_ = ip_ - 2;
+    id_ = id_ - 2;
+    jp_ = jp_ - 2;
+    jd_ = jd_ - 2;
 
 
     // -------------------------

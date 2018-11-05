@@ -14,8 +14,6 @@ public:
     ~Timer();
     //! Init t0 of the timer, no MPI
     void init(std::string name);
-    //! Init t0 of the timer, synchronized through MPI
-    void init(std::string name);
     //! Accumulate time couting from last init/restart
     void update();
     //! Start a new cumulative period

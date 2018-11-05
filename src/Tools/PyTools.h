@@ -132,7 +132,7 @@ public:
             if (exitOnError) {
                 ERROR("checkPyError " << message);
             } else {
-                MESSAGE(1,"[Python] " << message);
+                MESSAGE("[Python] " << message);
             }
         }
     }
@@ -140,12 +140,12 @@ public:
     static void runPyFunction(std::string name) {
         PyObject* myFunction = PyObject_GetAttrString(PyImport_AddModule("__main__"),name.c_str());
         if (myFunction) {
-            MESSAGE(1,"Calling python " << name);
+            MESSAGE("Calling python " << name);
             PyObject_CallFunction(myFunction,const_cast<char *>(""));
             checkPyError(true);
             Py_DECREF(myFunction);
         } else {
-            MESSAGE(1,"python " << name << " function does not exists");
+            MESSAGE("python " << name << " function does not exists");
         }
     }
 
