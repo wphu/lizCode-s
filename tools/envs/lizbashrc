@@ -21,6 +21,7 @@ export SuperLU_DIST_dir=${third_part_codes_path}/superlu_dist
 export petsc_dir=${third_part_codes_path}/petsc
 export petsc_arch=arch-linux2-c-debug
 #export SuiteSparse_dir=${third_part_codes_path}/SuiteSparse
+export gperftools_dir=${third_part_codes_path}/gperftools
 
 #source ${intel_compiler_dir}/bin/compilervars.sh intel64
 export PATH=${mpich_dir}/bin:$PATH
