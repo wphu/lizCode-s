@@ -7,7 +7,7 @@ export compiler_mpicxx=mpicxx
 export source_codes_root_path=$(pwd)
 
 # install anaconda3
-./Anaconda3-5.1.0-Linux-x86_64.sh -b -p ${install_path_header}/anaconda3
+bash ./Anaconda3-5.1.0-Linux-x86_64.sh -b -p ${install_path_header}/anaconda3
 
 # install mpich3
 CC=${compiler_c}
