@@ -1,6 +1,5 @@
 #include "Grid2D.h"
 #include "Field2D.h"
-#include "SmileiMPI_Cart2D.h"
 
 #include <iostream>
 #include <vector>

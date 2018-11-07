@@ -11,8 +11,6 @@
 
 using namespace std;
 
-class SmileiMPI;
-
 // class Grid2D used to defined a 2d vector
 class Grid2D : public Grid
 {

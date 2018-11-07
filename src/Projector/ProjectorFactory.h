@@ -15,7 +15,7 @@
 
 class ProjectorFactory {
 public:
-    static Projector* create(PicParams& param) 
+    static Projector* create(PicParams& params) 
     {
         Projector* Proj = NULL;
         // ---------------

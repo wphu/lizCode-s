@@ -85,7 +85,6 @@ public:
     double dz_ov_dt;
 
 
-    //> gather time-average fields to process 0 to output
 
 private:
 

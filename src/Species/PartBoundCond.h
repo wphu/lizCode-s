@@ -41,7 +41,8 @@ public:
     //! The decision whether the particle is added or not on the Exchange Particle List is defined by the final
     //! value of keep_part.
     //! Be careful, once an a BC along a given dimension set keep_part to 0, it will remain to 0.
-    inline int apply( Particles &particles, int ipart, SpeciesStructure &params, double &nrj_iPart , int &iDirection) {//, bool &contribute ) {
+    inline int apply( Particles &particles, int ipart, SpeciesStructure &params, double &nrj_iPart , int &iDirection) 
+    {//, bool &contribute ) {
 
         // iDirection >= 0 means the particle exceeds the boundary of the whole region
         iDirection = -1;

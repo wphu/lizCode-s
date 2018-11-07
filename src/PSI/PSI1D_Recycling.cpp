@@ -1,5 +1,4 @@
 #include "PSI1D_Recycling.h"
-#include "SmileiMPI.h"
 #include "Field2D.h"
 
 #include <cmath>

@@ -223,7 +223,7 @@ class PlotWidget1D(QWidget):
 
         # data4d has four dimensions, the first is time
         self.prefix = 'data'
-        self.data4d = collect("/Fields/", "Phi_global_avg", prefix = self.prefix)
+        self.data4d = collect("/Fields/", "Phi_avg", prefix = self.prefix)
         self.dataName = "electric potential"          
 
         sizePolicy = QSizePolicy();

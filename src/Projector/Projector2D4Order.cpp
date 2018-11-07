@@ -23,9 +23,6 @@ Projector2D4Order::Projector2D4Order (PicParams& params) : Projector2D(params)
 
     one_third = 1.0/3.0;
 
-    i_domain_begin = ;
-    j_domain_begin = ;
-
     DEBUG("cell_length "<< params.cell_length[0]);
 
 }

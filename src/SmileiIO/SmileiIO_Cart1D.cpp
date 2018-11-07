@@ -31,7 +31,7 @@ SmileiIO_Cart1D::~SmileiIO_Cart1D()
 //> create hdf5 data hierarchical structure: datespace, dateset and so on
 void SmileiIO_Cart1D::createFieldsPattern( PicParams& params, ElectroMagn* fields )
 {
-    fieldsGroup.dims_global[2] = params.n_space_global[0] + 1;
+    fieldsGroup.dims_global[2] = params.n_space[0] + 1;
     fieldsGroup.dims_global[1] = 1;
     fieldsGroup.dims_global[0] = 1;
 

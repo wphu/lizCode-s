@@ -198,8 +198,6 @@ public:
 
     virtual void incrementAvgFields(unsigned int time_step) = 0;
 
-    //! compute Poynting on borders
-    virtual void computePoynting() = 0;
 
     //! pointing vector on borders
     //! 1D: poynting[0][0]=left , poynting[1][0]=right
@@ -209,12 +207,6 @@ public:
 
     //same as above but instantaneous
     std::vector<double> poynting_inst[2];
-
-    // gather time-average fields to process 0 to output
-    virtual void gatherAvgFields()=0;
-
-    // gather fields to process 0 to calculate EM fields
-    virtual void gatherFields()=0;
 
     double getLostNrjMW() const {return nrj_mw_lost;}
 

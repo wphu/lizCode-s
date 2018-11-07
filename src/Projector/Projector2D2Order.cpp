@@ -368,6 +368,8 @@ void Projector2D2Order::operator() (Field* rho, Particles &particles, int ipart)
 
     //cout << "Pos = " << particles.position(0, ipart) << " - i global = " << i << " - i local = " << i-index_domain_begin <<endl;
 
+    int i = ic - 1;
+    int j = jc - 1;
     // 2nd order projection for the total charge density
     for (unsigned int iloc=0 ; iloc<3 ; iloc++) {
         for (unsigned int jloc=0 ; jloc<3 ; jloc++) {

@@ -10,7 +10,7 @@ EF_Solver1D_GeneralThomas::EF_Solver1D_GeneralThomas(PicParams &params, int nx_s
     dx = params.cell_length[0];
     dx_inv_ = 1.0 / dx;
     dx_sq = dx * dx;
-    nx = params.n_space_global[0]+1;
+    nx = params.n_space[0]+1;
     nx_source_left = nx_sou_left;
 
     if(params.bc_em_type_x[0] == "Dirichlet"){

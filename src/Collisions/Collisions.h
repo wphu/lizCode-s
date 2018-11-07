@@ -84,7 +84,7 @@ public:
 
     //! Method called in the main smilei loop to apply collisions at each timestep
     // relativistic case
-    virtual void collide_relativistic(PicParams&, SmileiMPI* smpi, std::vector<Species*>&,int){};
+    virtual void collide_relativistic(PicParams&, std::vector<Species*>&,int){};
 
     // non-relativistic case
     virtual void collide(PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies, Diagnostic* diag, int itime){};

@@ -103,18 +103,18 @@ public:
 		        // Print collisions parameters
 		        mystream.str(""); // clear
 		        for (unsigned int rs=0 ; rs<sgroup1.size() ; rs++) mystream << " #" << sgroup1[rs];
-		        MESSAGE(1,"First  group of species :" << mystream.str());
+		        MESSAGE("First  group of species :" << mystream.str());
 		        mystream.str(""); // clear
 		        for (unsigned int rs=0 ; rs<sgroup2.size() ; rs++) mystream << " #" << sgroup2[rs];
-		        MESSAGE(1,"Second group of species :" << mystream.str());
-		        MESSAGE(1,"Coulomb logarithm       : " << clog);
-		        MESSAGE(1,"Intra collisions        : " << (intra?"True":"False"));
+		        MESSAGE("Second group of species :" << mystream.str());
+		        MESSAGE("Coulomb logarithm       : " << clog);
+		        MESSAGE("Intra collisions        : " << (intra?"True":"False"));
 		        mystream.str(""); // clear
 		        mystream << "Every " << debug_every << " timesteps";
-		        MESSAGE(1,"Debug                   : " << (debug_every<=0?"No debug":mystream.str()));
+		        MESSAGE("Debug                   : " << (debug_every<=0?"No debug":mystream.str()));
 
 		        // Add new Collisions objects to vector
-		        vecCollisions.push_back( new Collisions1D_Coulomb(params,vecSpecies,smpi,n_collisions,sgroup1,sgroup2,clog,intra,debug_every) );
+		        vecCollisions.push_back( new Collisions1D_Coulomb(params,vecSpecies,n_collisions,sgroup1,sgroup2,clog,intra,debug_every) );
 
 
 			}
@@ -124,7 +124,7 @@ public:
 				MESSAGE("Collision type :" << collisions_type);
 				// Add new Collisions objects to vector
 				//> Three species participate in the ionization collision
-		        vecCollisions.push_back( new Collisions1D_Ionization_Simple(params,vecSpecies,smpi,n_collisions,sgroup1,sgroup2,sgroup3,clog,intra,debug_every) );
+		        vecCollisions.push_back( new Collisions1D_Ionization_Simple(params,vecSpecies,n_collisions,sgroup1,sgroup2,sgroup3,clog,intra,debug_every) );
 			}
 
 			else if(params.geometry == "1d3v" && collisions_type == "Ionization")
@@ -159,18 +159,18 @@ public:
 		        // Print collisions parameters
 		        mystream.str(""); // clear
 		        for (unsigned int rs=0 ; rs<sgroup1.size() ; rs++) mystream << " #" << sgroup1[rs];
-		        MESSAGE(1,"First  group of species :" << mystream.str());
+		        MESSAGE("First  group of species :" << mystream.str());
 		        mystream.str(""); // clear
 		        for (unsigned int rs=0 ; rs<sgroup2.size() ; rs++) mystream << " #" << sgroup2[rs];
-		        MESSAGE(1,"Second group of species :" << mystream.str());
+		        MESSAGE("Second group of species :" << mystream.str());
 				mystream.str(""); // clear
 		        for (unsigned int rs=0 ; rs<sgroup3.size() ; rs++) mystream << " #" << sgroup3[rs];
-		        MESSAGE(1,"Third group of species :" << mystream.str());
+		        MESSAGE("Third group of species :" << mystream.str());
 
 
 				// Add new Collisions objects to vector
 				//> Three species participate in the ionization collision
-		        vecCollisions.push_back( new Collisions1D_Ionization(params,vecSpecies,smpi,n_collisions,sgroup1,sgroup2,sgroup3, crossSection_fileName) );
+		        vecCollisions.push_back( new Collisions1D_Ionization(params,vecSpecies,n_collisions,sgroup1,sgroup2,sgroup3, crossSection_fileName) );
 
 			}
 
@@ -201,14 +201,14 @@ public:
 				// Print collisions parameters
 				mystream.str(""); // clear
 				for (unsigned int rs=0 ; rs<sgroup1.size() ; rs++) mystream << " #" << sgroup1[rs];
-				MESSAGE(1,"First  group of species :" << mystream.str());
+				MESSAGE("First  group of species :" << mystream.str());
 				mystream.str(""); // clear
 				for (unsigned int rs=0 ; rs<sgroup2.size() ; rs++) mystream << " #" << sgroup2[rs];
-				MESSAGE(1,"Second group of species :" << mystream.str());
+				MESSAGE("Second group of species :" << mystream.str());
 
 				// Add new Collisions objects to vector
 				//> Three species participate in the ionization collision
-				vecCollisions.push_back( new Collisions1D_Excitation(params,vecSpecies,smpi,n_collisions,sgroup1,sgroup2,crossSection_fileName) );
+				vecCollisions.push_back( new Collisions1D_Excitation(params,vecSpecies,n_collisions,sgroup1,sgroup2,crossSection_fileName) );
 
 			}
 
@@ -244,18 +244,18 @@ public:
 		        // Print collisions parameters
 		        mystream.str(""); // clear
 		        for (unsigned int rs=0 ; rs<sgroup1.size() ; rs++) mystream << " #" << sgroup1[rs];
-		        MESSAGE(1,"First  group of species :" << mystream.str());
+		        MESSAGE("First  group of species :" << mystream.str());
 		        mystream.str(""); // clear
 		        for (unsigned int rs=0 ; rs<sgroup2.size() ; rs++) mystream << " #" << sgroup2[rs];
-		        MESSAGE(1,"Second group of species :" << mystream.str());
+		        MESSAGE("Second group of species :" << mystream.str());
 				mystream.str(""); // clear
 		        for (unsigned int rs=0 ; rs<sgroup3.size() ; rs++) mystream << " #" << sgroup3[rs];
-		        MESSAGE(1,"Third group of species :" << mystream.str());
+		        MESSAGE("Third group of species :" << mystream.str());
 
 
 				// Add new Collisions objects to vector
 				//> Three species participate in the ionization collision
-		        vecCollisions.push_back( new Collisions1D_Recombination_TB(params,vecSpecies,smpi,n_collisions,sgroup1,sgroup2,sgroup3, crossSection_fileName) );
+		        vecCollisions.push_back( new Collisions1D_Recombination_TB(params,vecSpecies,n_collisions,sgroup1,sgroup2,sgroup3, crossSection_fileName) );
 
 			}
 
@@ -291,18 +291,18 @@ public:
 		        // Print collisions parameters
 		        mystream.str(""); // clear
 		        for (unsigned int rs=0 ; rs<sgroup1.size() ; rs++) mystream << " #" << sgroup1[rs];
-		        MESSAGE(1,"First  group of species :" << mystream.str());
+		        MESSAGE("First  group of species :" << mystream.str());
 		        mystream.str(""); // clear
 		        for (unsigned int rs=0 ; rs<sgroup2.size() ; rs++) mystream << " #" << sgroup2[rs];
-		        MESSAGE(1,"Second group of species :" << mystream.str());
+		        MESSAGE("Second group of species :" << mystream.str());
 				mystream.str(""); // clear
 		        for (unsigned int rs=0 ; rs<sgroup3.size() ; rs++) mystream << " #" << sgroup3[rs];
-		        MESSAGE(1,"Third group of species :" << mystream.str());
+		        MESSAGE("Third group of species :" << mystream.str());
 
 
 				// Add new Collisions objects to vector
 				//> Three species participate in the ionization collision
-		        vecCollisions.push_back( new Collisions1D_Recombination_Rad(params,vecSpecies,smpi,n_collisions,sgroup1,sgroup2,sgroup3, crossSection_fileName) );
+		        vecCollisions.push_back( new Collisions1D_Recombination_Rad(params,vecSpecies,n_collisions,sgroup1,sgroup2,sgroup3, crossSection_fileName) );
 
 			}
 
@@ -333,16 +333,16 @@ public:
 				// Print collisions parameters
 				mystream.str(""); // clear
 				for (unsigned int rs=0 ; rs<sgroup1.size() ; rs++) mystream << " #" << sgroup1[rs];
-				MESSAGE(1,"First  group of species :" << mystream.str());
+				MESSAGE("First  group of species :" << mystream.str());
 				mystream.str(""); // clear
 				for (unsigned int rs=0 ; rs<sgroup2.size() ; rs++) mystream << " #" << sgroup2[rs];
-				MESSAGE(1,"Second group of species :" << mystream.str());
+				MESSAGE("Second group of species :" << mystream.str());
 				mystream.str(""); // clear
 
 
 				// Add new Collisions objects to vector
 				//> Three species participate in the ionization collision
-		        vecCollisions.push_back( new Collisions1D_ChargeExchange(params,vecSpecies,smpi,n_collisions,sgroup1,sgroup2,crossSection_fileName) );
+		        vecCollisions.push_back( new Collisions1D_ChargeExchange(params,vecSpecies,n_collisions,sgroup1,sgroup2,crossSection_fileName) );
 
 			}
 			else if(params.geometry == "1d3v" && collisions_type == "DSMC")
@@ -390,21 +390,21 @@ public:
 		        // Print collisions parameters
 		        mystream.str(""); // clear
 		        for (unsigned int rs=0 ; rs<sgroup1.size() ; rs++) mystream << " #" << sgroup1[rs];
-		        MESSAGE(1,"First  group of species :" << mystream.str());
+		        MESSAGE("First  group of species :" << mystream.str());
 				if (sgroup2.size()!=0) {
 					species_group.push_back(sgroup2);
 					mystream.str(""); // clear
 			        for (unsigned int rs=0 ; rs<sgroup2.size() ; rs++) mystream << " #" << sgroup2[rs];
-			        MESSAGE(1,"Second group of species :" << mystream.str());
+			        MESSAGE("Second group of species :" << mystream.str());
 				}
 				if (sgroup3.size()!=0) {
 					species_group.push_back(sgroup2);
 					mystream.str(""); // clear
 			        for (unsigned int rs=0 ; rs<sgroup3.size() ; rs++) mystream << " #" << sgroup3[rs];
-			        MESSAGE(1,"Third group of species :" << mystream.str());
+			        MESSAGE("Third group of species :" << mystream.str());
 				}
 
-		        vecCollisions.push_back( new Collisions1D_DSMC(params,vecSpecies,smpi,n_collisions,species_group) );
+		        vecCollisions.push_back( new Collisions1D_DSMC(params,vecSpecies,n_collisions,species_group) );
 			}
 
 			else if(params.geometry == "1d3v" && collisions_type == "Elastic")
@@ -413,7 +413,7 @@ public:
 				// Add new Collisions objects to vector
 				//> Only one species group participate in the ionization collision, all the particles from
 				//> different species are the same
-		        vecCollisions.push_back( new Collisions1D_Elastic(params,vecSpecies,smpi,n_collisions,sgroup1,sgroup2,clog,intra,debug_every) );
+		        vecCollisions.push_back( new Collisions1D_Elastic(params,vecSpecies,n_collisions,sgroup1,sgroup2,clog,intra,debug_every) );
 			}
 
 			else {
@@ -429,7 +429,7 @@ public:
 
 	    // pass the variable "debye_length_required" into the Collision class
 
-		//MESSAGE(1,"aaaaaaa ");
+		//MESSAGE("aaaaaaa ");
 	    return vecCollisions;
 
 	};

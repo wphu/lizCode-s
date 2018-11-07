@@ -4,8 +4,6 @@
 #include "Grid.h"
 #include "Grid2D.h"
 #include "Grid3D.h"
-#include "SmileiMPI.h"
-#include "SmileiMPI_Cart2D.h"
 #include "PicParams.h"
 #include "InputData.h"
 #include "SmileiIO.h"
@@ -17,18 +15,16 @@
 using namespace std;
 
 //  --------------------------------------------------------------------------------------------------------------------
-//! Class SmileiMPIFactory
+
 //  --------------------------------------------------------------------------------------------------------------------
 class GridFactory {
 public:
     //  --------------------------------------------------------------------------------------------------------------------
-    //! Create appropriate MPI environment for the geometry
-    //! \param params : Parameters
-    //! \param smpiData : Initial MPI environment (data broadcast)
+
     //  --------------------------------------------------------------------------------------------------------------------
     static Grid* create(PicParams& params, InputData &ifile, SmileiIO* sio) {
         Grid* grid = NULL;
-        MESSAGE(1, "Geometry:" << params.geometry);
+        MESSAGE("Geometry:" << params.geometry);
         if ( params.geometry == "1d3v" ) 
         {
         }
@@ -70,7 +66,7 @@ public:
                 potential_wall = 0.0;
     	        ifile.extract("potential_wall",potential_wall,"Grid",n_Grid);
 
-                grid = new Grid2D(params, smpi, gridType, gapKind, ny_source, ny_gapHeight, nx_gapWeight, ny_bevel_depth, potential_wall);
+                grid = new Grid2D(params, gridType, gapKind, ny_source, ny_gapHeight, nx_gapWeight, ny_bevel_depth, potential_wall);
 
                 if(grid->gridType == "from_file")
                 {
@@ -78,7 +74,6 @@ public:
                 }
                 grid->compute();
             }
-            smpi->scatterGrid(grid);
         }
         else if ( params.geometry == "3d3v" ) 
         {
@@ -118,7 +113,7 @@ public:
                 potential_wall = 0.0;
     	        ifile.extract("potential_wall",potential_wall,"Grid",n_Grid);
 
-                grid = new Grid3D(params, smpi, gridType, gapKind, ny_source, ny_gapHeight, nx_gapWeight, ny_bevel_depth, potential_wall);
+                grid = new Grid3D(params, gridType, gapKind, ny_source, ny_gapHeight, nx_gapWeight, ny_bevel_depth, potential_wall);
     	        if(grid->gridType == "from_file")
                 {
                     sio->readGrid(grid);
@@ -127,7 +122,6 @@ public:
                 grid->compute();
                 DEBUG(1, "Grid compute ends ================");
             }
-            //smpi->scatterGrid(grid);
             //DEBUG(2, "Scatter grid ends ================");
         }
         else 

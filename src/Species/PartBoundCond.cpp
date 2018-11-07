@@ -21,11 +21,11 @@ PartBoundCond::PartBoundCond(PicParams& params, int ispec)
 
     // Absolute global values
     double x_min_global = 0;
-    double x_max_global = params.cell_length[0]*(params.n_space_global[0]);
+    double x_max_global = params.cell_length[0]*(params.n_space[0]);
     double y_min_global = 0;
-    double y_max_global = params.cell_length[1]*(params.n_space_global[1]);
+    double y_max_global = params.cell_length[1]*(params.n_space[1]);
     double z_min_global = 0;
-    double z_max_global = params.cell_length[2]*(params.n_space_global[2]);
+    double z_max_global = params.cell_length[2]*(params.n_space[2]);
 
     // by default apply no bcs
     bc_west   = NULL;
@@ -40,30 +40,30 @@ PartBoundCond::PartBoundCond(PicParams& params, int ispec)
     // -----------------------------
 
     // 1d3v or 2d3v or 3d3v
-    x_min = ;
-    x_max = ;
+    x_min = 0.0;
+    x_max = params.cell_length[0]*(params.n_space[0]);
 
     // 2d3v or 3d3v
     if ( nDim_particle > 1 ) {
         if ( (params.bc_em_type_y[0]=="periodic") || (params.bc_em_type_y[1]=="periodic") ) {
-            y_min = ;
-            y_max = ;
+            y_min = 0.0;
+            y_max = params.sim_length[1];
         }
         else {
-            y_min = ;
-            y_max = );
+            y_min = 0.0;
+            y_max = params.sim_length[1];
         }
     }
 
     // 3d3v
     if ( nDim_particle > 2 ) {
         if ( (params.bc_em_type_z[0]=="periodic") || (params.bc_em_type_z[1]=="periodic") ) {
-            z_min = ;
-            z_max = );
+            z_min = 0.0;
+            z_max = params.sim_length[2];
         }
         else {
-            z_min = ;
-            z_max = ;
+            z_min = 0.0;
+            z_max = params.sim_length[2];
         }
     }
 
@@ -93,20 +93,20 @@ PartBoundCond::PartBoundCond(PicParams& params, int ispec)
 
     // West
     if ( params.species_param[ispec].bc_part_type_west == "refl" ) {
-        if (smpi->isWestern()) bc_west = &refl_particle;
+        bc_west = &refl_particle;
     }
     else if ( params.species_param[ispec].bc_part_type_west == "supp" ) {
-        if (smpi->isWestern()) bc_west = &supp_particle;
+        bc_west = &supp_particle;
     }
     else if ( params.species_param[ispec].bc_part_type_west == "stop" ) {
-        if (smpi->isWestern()) bc_west = &stop_particle;
+        bc_west = &stop_particle;
     }
     else if ( params.species_param[ispec].bc_part_type_west == "periodic" ) {
-        if (smpi->isWestern()) bc_west = &periodic_particle;
+        bc_west = &periodic_particle;
     }
     else if ( params.species_param[ispec].bc_part_type_west == "thermalize" ) {
         thermCond = true;
-        if (smpi->isWestern()) bc_west = &thermalize_particle;
+        bc_west = &thermalize_particle;
     }
     else if ( params.species_param[ispec].bc_part_type_west == "none" ) {
         WARNING( "West boundary condition for species " << ispec << " is 'none', which means the same as fields");
@@ -117,20 +117,20 @@ PartBoundCond::PartBoundCond(PicParams& params, int ispec)
 
     // East
     if ( params.species_param[ispec].bc_part_type_east == "refl" ) {
-        if (smpi->isEastern()) bc_east = &refl_particle;
+        bc_east = &refl_particle;
     }
     else if ( params.species_param[ispec].bc_part_type_east == "supp" ) {
-        if (smpi->isEastern()) bc_east = &supp_particle;
+        bc_east = &supp_particle;
     }
     else if ( params.species_param[ispec].bc_part_type_east == "stop" ) {
-        if (smpi->isEastern()) bc_east = &stop_particle;
+        bc_east = &stop_particle;
     }
     else if ( params.species_param[ispec].bc_part_type_east == "periodic" ) {
-        if (smpi->isEastern()) bc_east = &periodic_particle;
+        bc_east = &periodic_particle;
     }
     else if ( params.species_param[ispec].bc_part_type_east == "thermalize" ) {
         thermCond = true;
-        if (smpi->isEastern()) bc_east = &thermalize_particle;
+        bc_east = &thermalize_particle;
     }
     else if ( params.species_param[ispec].bc_part_type_east == "none" ) {
         WARNING( "East boundary condition for species " << ispec << " is 'none', which means the same as fields");
@@ -143,20 +143,20 @@ PartBoundCond::PartBoundCond(PicParams& params, int ispec)
     if ( nDim_particle > 1 ) {
         // South
         if ( params.species_param[ispec].bc_part_type_south == "refl" ) {
-            if (smpi->isSouthern()) bc_south = &refl_particle;
+            bc_south = &refl_particle;
         }
         else if ( params.species_param[ispec].bc_part_type_south == "supp" ) {
-            if (smpi->isSouthern()) bc_south = &supp_particle;
+            bc_south = &supp_particle;
         }
         else if ( params.species_param[ispec].bc_part_type_south == "stop" ) {
-            if (smpi->isSouthern()) bc_south = &stop_particle;
+            bc_south = &stop_particle;
         }
         else if ( params.species_param[ispec].bc_part_type_south == "periodic" ) {
-            if (smpi->isSouthern()) bc_south = &periodic_particle;
+            bc_south = &periodic_particle;
         }
         else if ( params.species_param[ispec].bc_part_type_south == "thermalize" ) {
             thermCond = true;
-            if (smpi->isSouthern()) bc_south = &thermalize_particle;
+            bc_south = &thermalize_particle;
         }
         else if ( params.species_param[ispec].bc_part_type_south == "none" ) {
             WARNING( "South boundary condition for species " << ispec << " is 'none', which means the same as fields");
@@ -167,20 +167,20 @@ PartBoundCond::PartBoundCond(PicParams& params, int ispec)
 
         // North
         if ( params.species_param[ispec].bc_part_type_north == "refl" ) {
-            if (smpi->isNorthern()) bc_north = &refl_particle;
+            bc_north = &refl_particle;
         }
         else if ( params.species_param[ispec].bc_part_type_north == "supp" ) {
-            if (smpi->isNorthern()) bc_north = &supp_particle;
+            bc_north = &supp_particle;
         }
         else if ( params.species_param[ispec].bc_part_type_north == "stop" ) {
-            if (smpi->isNorthern()) bc_north = &stop_particle;
+            bc_north = &stop_particle;
         }
         else if ( params.species_param[ispec].bc_part_type_north == "periodic" ) {
-            if (smpi->isNorthern()) bc_north = &periodic_particle;
+            bc_north = &periodic_particle;
         }
         else if ( params.species_param[ispec].bc_part_type_north == "thermalize" ) {
             thermCond = true;
-            if (smpi->isNorthern()) bc_north = &thermalize_particle;
+            bc_north = &thermalize_particle;
         }
         else if ( params.species_param[ispec].bc_part_type_north == "none" ) {
             WARNING( "North boundary condition for species " << ispec << " is 'none', which means the same as fields");
@@ -237,11 +237,3 @@ PartBoundCond::~PartBoundCond()
 {
 }
 
-
-void PartBoundCond::moveWindow_x(double shift, SmileiMPI* smpi)
-{
-    x_min += shift;
-    x_max += shift;
-    if (smpi->isWestern()) bc_west = &supp_particle;
-    if (smpi->isEastern()) bc_east = &supp_particle;
-}

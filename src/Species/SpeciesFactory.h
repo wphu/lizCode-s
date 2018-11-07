@@ -19,25 +19,8 @@ public:
             sp = new Species_rrll(params, ispec);
         } // END if
 
-	if (params.species_param[ispec].isTest) {
-	    int locNbrParticles = sp->getNbrOfParticles();
-	    int* allNbrParticles = new int[smpi->smilei_sz];
-	    int nParticles(0);
-	    if (smpi->isMaster()) {
-		nParticles =  allNbrParticles[0];
-		for (int irk=1 ; irk<smpi->getSize() ; irk++){
-		    allNbrParticles[irk] += nParticles;
-		    nParticles = allNbrParticles[irk];
-		}
-		for (int irk=smpi->getSize()-1 ; irk>0 ; irk--){
-		    allNbrParticles[irk] = allNbrParticles[irk-1];
-		}
-		allNbrParticles[0] = 0;
-
-	    }
-	    int offset(0);
-	    MPI_Scatter(allNbrParticles, 1 , MPI_INTEGER, &offset, 1, MPI_INTEGER, 0, MPI_COMM_WORLD );
-	    sp->particles.addIdOffsets(offset);
+	if (params.species_param[ispec].isTest) 
+    {
 	}
 
         return sp;
@@ -57,7 +40,7 @@ public:
                 electron_species=vecSpecies[ispec];
             }
             nPart = vecSpecies[ispec]->getNbrOfParticles();
-            MESSAGE(1,"Species " << ispec << " (" << params.species_param[ispec].species_type << ") created with " << nPart << " particles" );
+            MESSAGE("Species " << ispec << " (" << params.species_param[ispec].species_type << ") created with " << nPart << " particles" );
         } // END for ispec
 
 

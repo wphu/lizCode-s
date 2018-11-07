@@ -3,7 +3,7 @@ export SuperLU_serial=yes
 export petsc=no
 export umfpack=no
 
-export lizHomePath=/home/huwanpeng/codes/lizCode
+export lizHomePath=/home/huwanpeng/codes/lizCode-s
 export third_part_codes_path=/home/huwanpeng/opt
 
 # google-perftools parameters

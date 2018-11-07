@@ -65,6 +65,7 @@ int main (int argc, char* argv[])
     // Read the namelists file (no check!)
     InputData input_data(namelists);
     
+    TITLE("PicParams info");
     // Read simulation & diagnostics parameters
     PicParams params(input_data);
     params.print();
@@ -133,7 +134,7 @@ int main (int argc, char* argv[])
     // projection operator (virtual)
     Projector* Proj = ProjectorFactory::create(params);
 
-    //Create mpi i/o environment
+    //Create i/o environment
     TITLE("Creating IO output environment");
     SmileiIO*  sio  = SmileiIOFactory::create(params, EMfields, vecSpecies);
 
@@ -198,8 +199,7 @@ int main (int argc, char* argv[])
 
     #ifdef  __DEBUG
     
-    long long mpi_rk = smpi->getRank();
-    string prof_name = "./liz.prof_" + to_string( mpi_rk );
+    string prof_name = "./liz.prof";
     ProfilerStart(prof_name.c_str());
     
     /*
@@ -238,7 +238,7 @@ int main (int argc, char* argv[])
             }
             timer[2].update();
 
-            //MESSAGE("Interpolate and Move ");
+            MESSAGE("Interpolate and Move ");
             // ================== Interpolate and Move ===============================
             int tid(0);
             timer[3].restart();
@@ -252,7 +252,7 @@ int main (int argc, char* argv[])
             }
             timer[3].update();
 
-            //MESSAGE("Sort Particle ");
+            MESSAGE("Sort Particle ");
             // ================== Sort Particle ============================================
             timer[4].restart();
             for (unsigned int ispec=0 ; ispec<params.species_param.size(); ispec++)
@@ -268,14 +268,14 @@ int main (int argc, char* argv[])
             }
             timer[4].update();
 
-            //MESSAGE("Run Diagnostic ");
+            MESSAGE("Run Diagnostic ");
             // ================== Run Diagnostic =============================================
             // absorb particles and calculate particle flux, heat flux, and average angle for 2D and 3D
             timer[8].restart();
-            diag->run(grid, vecSpecies, EMfields, vecPSI, itime);
+            //diag->run(grid, vecSpecies, EMfields, vecPSI, itime);
             timer[8].update();
 
-            //MESSAGE("Project Particle ");
+            MESSAGE("Project Particle ");
             // ================== Project Particle =========================================
             timer[6].restart();
             for (unsigned int ispec=0 ; ispec<params.species_param.size(); ispec++)
@@ -286,7 +286,7 @@ int main (int argc, char* argv[])
             timer[6].update();
 
 
-            //MESSAGE("PSI ");
+            MESSAGE("PSI ");
             // ================== Plasma Surface Interacton ==================================
             timer[7].restart();
             for (unsigned int ipsi=0 ; ipsi<vecPSI.size(); ipsi++)
@@ -302,7 +302,7 @@ int main (int argc, char* argv[])
             }
             timer[7].update();
 
-            //MESSAGE("Solve Eields");
+            MESSAGE("Solve Eields");
             // ================== Solve Electromagnetic Fields ===============================
             timer[9].restart();
             EMfields->restartRhoJ();
@@ -310,15 +310,15 @@ int main (int argc, char* argv[])
             (*solver)(EMfields);
             timer[9].update();
 
-            //MESSAGE("Write IO");
+            MESSAGE("Write IO");
             // ================== Write IO ====================================================
             timer[10].restart();
             if(params.ntime_step_avg)
             {
                 EMfields->incrementAvgFields(itime);
             }
-            if(itime % params.dump_step == 0){
-                EMfields->gatherAvgFields();
+            if(itime % params.dump_step == 0)
+            {
                 MESSAGE("time step = "<<itime);
             }
             sio->write(params, EMfields, vecSpecies, diag, itime);
@@ -375,10 +375,6 @@ int main (int argc, char* argv[])
     TITLE("Cleaning up python runtime environement");
     input_data.cleanup();
 
-
-    //double timElapsed=smpiData->time_seconds();
-    //if ( smpi->isMaster() ) MESSAGE("Time in time loop : " << timElapsed );
-
     TITLE("Time profiling :");
     //timer[0].update();
     //timer[0].print();
@@ -408,7 +404,6 @@ int main (int argc, char* argv[])
     vecSpecies.clear();
     TITLE("END");
     delete sio;
-    delete smpiData;
     return 0;
 
 }//END MAIN

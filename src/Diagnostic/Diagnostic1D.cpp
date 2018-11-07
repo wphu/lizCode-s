@@ -144,18 +144,6 @@ void Diagnostic1D::run( Grid* grid, vector<Species*>& vecSpecies, ElectroMagn* E
 			particleFlux[ispec][1] *= wlt;
 			heatFlux[ispec][0] 	   *= wlt;
 			heatFlux[ispec][1]     *= wlt;
-
-			for(int iDirection = 0; iDirection < 2; iDirection++)
-			{
-				MPI_Allreduce( &particleFlux[ispec][iDirection], &flux_temp, 1, MPI_DOUBLE,MPI_SUM, MPI_COMM_WORLD);
-				particleFlux[ispec][iDirection] = flux_temp;
-
-				MPI_Allreduce( &heatFlux[ispec][iDirection], &flux_temp, 1, MPI_DOUBLE,MPI_SUM, MPI_COMM_WORLD);
-				heatFlux[ispec][iDirection] = flux_temp;
-
-				MPI_Allreduce( &angleDist[ispec][iDirection][0], &angle_temp[0], 90, MPI_DOUBLE,MPI_SUM, MPI_COMM_WORLD);
-				angleDist[ispec][iDirection] = angle_temp;
-			}
 		}
 
 		s1 = vecSpecies[0];
@@ -317,16 +305,6 @@ void Diagnostic1D::calVT(vector<Species*>& vecSpecies, ElectroMagn* EMfields, in
 		}
 
 	}
-	// gather particleNumber and kineticEnergy to master process
-	if( (itime % step_dump) == 0 )
-	{
-		MPI_Allreduce( &particleNumber[0], &number_temp[0], n_species , MPI_INT,MPI_SUM, MPI_COMM_WORLD);
-		particleNumber = number_temp;
-		MPI_Allreduce( &kineticEnergy[0], &energy_temp[0], n_species , MPI_DOUBLE,MPI_SUM, MPI_COMM_WORLD);
-		kineticEnergy = energy_temp;
-	}
-
-
 }
 
 

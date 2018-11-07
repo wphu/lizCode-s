@@ -38,12 +38,12 @@ void Timer::restart()
 void Timer::print(double tot)
 {
     if ((time_acc_>0.) && (name_!=""))
-        MESSAGE(0, "\t" << setw(12) << name_ << "\t" << time_acc_  << "\t(" << 100.0*time_acc_/tot << "%)");
+        MESSAGE("\t" << setw(12) << name_ << "\t" << time_acc_  << "\t(" << 100.0*time_acc_/tot << "%)");
 }
 
 void Timer::print()
 {
-    MESSAGE(0, "\t" << setw(12) << "The total time: " << "\t" << time_acc_ );
+    MESSAGE("\t" << setw(12) << "The total time: " << "\t" << time_acc_ );
 }
 
 string Timer::getDateTime()

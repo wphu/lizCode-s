@@ -92,10 +92,11 @@ PicParams::PicParams(InputData &ifile)
 
 
     // solver_type for solve poisson equation
-    if (ifile.extract("solver_type", solver_type)) {
+    if (!ifile.extract("solver_type", solver_type)) {
         solver_type = "GeneralThomas";
         MESSAGE("default solver_type is GeneralThomas for 1D, or SLU for 2D&3D ");
     }
+    MESSAGE(solver_type);
 
     // -------------------
     // Simulation box info

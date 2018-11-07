@@ -31,7 +31,7 @@
 #define __header(__msg,__txt) std::cout << "\t[" << __msg << "] " << __FILE__ << ":" << __LINE__ << " (" \
 << __FUNCTION__ << ") " << __txt << std::endl
 
-#define MESSAGE(__txt)  std::cout << "MESSAGE: ";  std::cout << __txt << std::endl;
+#define MESSAGE(__txt)  std::cout << __txt << std::endl;
 
 #define __PRINTLINE(__num) {MESSAGE(std::string(__num,'-'))}
 
@@ -64,7 +64,7 @@ extern int debug_level;
 
 #define DEBUGEXEC(...) __VA_ARGS__
 #define RELEASEEXEC(...)
-
+#define HEREIAM(...)
 
 #else // __DEBUG
 

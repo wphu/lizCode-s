@@ -127,7 +127,7 @@ public:
 		        // Print PSI parameters
 		        mystream.str(""); // clear
 		        for (unsigned int rs=0 ; rs<sgroup1.size() ; rs++) mystream << " #" << sgroup1[rs];
-		        MESSAGE(1,"First  group of species :" << mystream.str());
+		        MESSAGE("First  group of species :" << mystream.str());
 
 		        // Add new PSI objects to vector
 		        vecPartSource.push_back( new PartSource1D_Emit(params, emitKind, sgroup1[0], emitPos, emitNumber,
@@ -183,7 +183,7 @@ public:
 		        // Print PSI parameters
 		        mystream.str(""); // clear
 		        for (unsigned int rs=0 ; rs<sgroup1.size() ; rs++) mystream << " #" << sgroup1[rs];
-		        MESSAGE(1,"First  group of species :" << mystream.str());
+		        MESSAGE("First  group of species :" << mystream.str());
 
 		        // Add new PSI objects to vector
 		        //vecPartSource.push_back( new PartSource1D_Load(params, smpi, sgroup1[0], loadDensity, loadTemperature, loadPos_start, loadPos_end) );
@@ -234,7 +234,7 @@ public:
 		        // Print PSI parameters
 		        mystream.str(""); // clear
 		        for (unsigned int rs=0 ; rs<sgroup1.size() ; rs++) mystream << " #" << sgroup1[rs];
-		        MESSAGE(1,"First  group of species :" << mystream.str());
+		        MESSAGE("First  group of species :" << mystream.str());
 
 		        // Add new PSI objects to vector
 		        //vecPartSource.push_back( new PartSource1D_Load(params, smpi, sgroup1[0], loadDensity, loadTemperature, loadPos_start, loadPos_end) );
@@ -290,7 +290,7 @@ public:
 		        // Print PSI parameters
 		        mystream.str(""); // clear
 		        for (unsigned int rs=0 ; rs<sgroup1.size() ; rs++) mystream << " #" << sgroup1[rs];
-		        MESSAGE(1,"First  group of species :" << mystream.str());
+		        MESSAGE("First  group of species :" << mystream.str());
 
 		        // Add new PSI objects to vector
 		        //vecPartSource.push_back( new PartSource1D_Load(params, smpi, sgroup1[0], loadDensity, loadTemperature, loadPos_start, loadPos_end) );

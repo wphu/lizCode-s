@@ -7,23 +7,20 @@ import math
 method = 'explicit'
 
 l0 = 0.5e-5     # nu.norm_l is reference time, the value's unit before / is m (SI)
-Lsim = [500.*l0]	# length of the simulation
+Lsim = [1500.*l0]	# length of the simulation
 
 t0 = 0.5e-12
 ns = int(1.0e-9 / t0)
-Tsim = 5 * ns			# duration of the simulation
-number_output = 5
+Tsim = 100 # * ns			# duration of the simulation
+number_output = 10
 
 # number of MPI processes
-n_procs = 24
+n_procs = 4
 
-
-
-#> number of timestep of incrementing averaged electromagnetic fields
-ntime_step_avg = ns
 
 #> Timestep to output some fields into hdf5 file
 dump_step = int( Tsim / number_output )
+ntime_step_avg = dump_step
 timesteps_restore = dump_step
 
 ion_step = 1
