@@ -207,3 +207,54 @@ void ElectroMagn::initRhoJ(vector<Species*>& vecSpecies, Projector* Proj)
 
 }
 
+
+void ElectroMagn::incrementAvgFields(unsigned int time_step)
+{
+    // reset the averaged fields for (time_step-1)%ntime_step_avg == 0
+    if ( (time_step-1) % dump_step == 0 )
+    {
+        rho_avg->put_to(0.0);
+        phi_avg->put_to(0.0);
+        Ex_avg->put_to(0.0);
+        for (unsigned int ispec=0; ispec<n_species; ispec++) {
+            rho_s_avg[ispec]->put_to(0.0);
+        }//END loop on species ispec
+    }
+
+    // Calculate the sum values for global rho phi Ex and Ey
+    if( (time_step % dump_step) > (dump_step - avg_step) || (time_step % dump_step) == 0 )
+    {
+        for (unsigned int i=0 ; i<globalDims_; i++) 
+        {
+            (*rho_avg)(i) += (*rho_)(i);
+            (*phi_avg)(i) += (*phi_)(i);
+            (*Ex_avg)(i)  += (*Ex_)(i);
+        }
+        // Calculate the sum values for density of each species
+        for (unsigned int ispec=0; ispec<n_species; ispec++) {
+            // all fields are defined on the primal grid
+            for (unsigned int ix=0 ; ix<globalDims_ ; ix++) {
+                (*rho_s_avg[ispec])(ix) += (*rho_s[ispec])(ix);
+            }
+        }//END loop on species ispec
+    }
+
+    // calculate the averaged values
+    if ( time_step % dump_step == 0 )
+    {
+        for (unsigned int i=0 ; i<globalDims_; i++) 
+        {
+            (*rho_avg)(i) /= avg_step;
+            (*phi_avg)(i) /= avg_step;
+            (*Ex_avg)(i)  /= avg_step;
+        }
+        for (unsigned int ispec=0; ispec<n_species; ispec++) 
+        {
+            for (unsigned int ix=0 ; ix<globalDims_; ix++) 
+            {
+                (*rho_s_avg[ispec])(ix) /= avg_step;
+            }
+        }//END loop on species ispec
+    }
+
+}//END incrementAvgFields

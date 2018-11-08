@@ -30,7 +30,7 @@ public:
     std::vector<unsigned int> dimPrim;
     std::vector<unsigned int> dimDual;
 
-    std::vector<unsigned int> dim_global;
+    unsigned int globalDims_;
 
 
 
@@ -196,7 +196,8 @@ public:
     virtual void saveMagneticFields() = 0;
     virtual void centerMagneticFields() = 0;
 
-    virtual void incrementAvgFields(unsigned int time_step) = 0;
+    //! Method used to reset/increment the averaged fields
+    void incrementAvgFields(unsigned int time_step);
 
 
     //! pointing vector on borders

@@ -52,6 +52,8 @@ ElectroMagn(params, input_data)
         dimPrim[i] += 2*oversize[i];
         dimDual[i] += 2*oversize[i];
     }
+    globalDims_ = dimPrim[0] * dimPrim[1] * dimPrim[2];
+
     // number of nodes of the primal and dual grid in the x-direction
     nx_p = n_space[0]+1+2*oversize[0];
     nx_d = n_space[0]+2+2*oversize[0];
@@ -82,6 +84,7 @@ ElectroMagn(params, input_data)
     rho_avg  = new Field3D(dimPrim, "Rho_avg" );
 
     // Allocation of time-averaged EM fields
+    phi_    = new Field3D(dimPrim, "Phi" );
     phi_avg = new Field3D(dimPrim, "Phi_avg" );
     Ex_avg  = new Field3D(dimPrim, "Ex_avg");
     Ey_avg  = new Field3D(dimPrim, "Ey_avg");
@@ -263,50 +266,6 @@ void ElectroMagn3D::centerMagneticFields()
 
 
 }//END centerMagneticFields
-
-
-
-// ---------------------------------------------------------------------------------------------------------------------
-// Reset/Increment the averaged fields
-// ---------------------------------------------------------------------------------------------------------------------
-void ElectroMagn3D::incrementAvgFields(unsigned int time_step)
-{
-    // reset the averaged fields for (time_step-1)%ntime_step_avg == 0
-    if ( (time_step-1) % dump_step == 0 )
-    {
-        for (unsigned int ispec=0; ispec<n_species; ispec++)
-        {
-            rho_s_avg[ispec]->put_to(0.0);
-        }
-    }
-
-    // Calculate the sum values for global rho phi Ex and Ey
-    if( (time_step % dump_step) > (dump_step - avg_step) || (time_step % dump_step) == 0 )
-    {
-        // Calculate the sum values for density of each species
-        for (unsigned int ispec=0; ispec<n_species; ispec++) 
-        {
-            // all fields are defined on the primal grid
-            for (unsigned int ix=0 ; ix<dimPrim[0]*dimPrim[1]*dimPrim[2] ; ix++) 
-            {
-                (*rho_s_avg[ispec])(ix) += (*rho_s[ispec])(ix);
-            }
-        }//END loop on species ispec
-    }
-
-    // calculate the averaged values
-    if ( time_step % dump_step == 0 )
-    {
-        for (unsigned int ispec=0; ispec<n_species; ispec++) 
-        {
-            for (unsigned int ix=0 ; ix<dimPrim[0]*dimPrim[1]*dimPrim[2] ; ix++) 
-            {
-                (*rho_s_avg[ispec])(ix) /= avg_step;
-            }
-        }//END loop on species ispec
-    }
-
-}//END incrementAvgFields
 
 
 

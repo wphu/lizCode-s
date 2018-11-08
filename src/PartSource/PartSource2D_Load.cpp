@@ -49,9 +49,13 @@ PartSource2D (params)
     YZArea = 1.0;
 
     loadBin_start = loadPos_start / params.cell_length[0];
-    loadBin_end = loadPos_end / params.cell_length[0];
+    loadBin_end = loadPos_end / params.cell_length[0] -1 ;
     loadBin_Ystart = loadPos_Ystart / params.cell_length[1];
-    loadBin_Yend = loadPos_Yend / params.cell_length[1]; 
+    loadBin_Yend = loadPos_Yend / params.cell_length[1] - 1; 
+    MESSAGE("loadBin_start:  "<<loadBin_start);
+    MESSAGE("loadBin_end:    "<<loadBin_end);
+    MESSAGE("loadBin_Ystart: "<<loadBin_Ystart);
+    MESSAGE("loadBin_Yend:   "<<loadBin_Yend);
 
     // load particles by number_density and Temperature
     numPart_in_each_cell = loadDensity / params.species_param[species1].weight;
