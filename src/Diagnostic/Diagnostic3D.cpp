@@ -33,8 +33,8 @@ Diagnostic(params)
     {
         particleFlux[i_species]         = new Field3D(dims_global, ("particleFlux_"          + params.species_param[i_species].species_type).c_str());
         heatFlux[i_species]             = new Field3D(dims_global, ("heatFlux_"              + params.species_param[i_species].species_type).c_str());
-        particleFlux_global[i_species]  = new Field3D(dims_global, ("particleFlux_global_"   + params.species_param[i_species].species_type).c_str());
-        heatFlux_global[i_species]      = new Field3D(dims_global, ("heatFlux_global_"       + params.species_param[i_species].species_type).c_str());
+        particleFlux_global[i_species]  = new Field3D(dims_global, ("particleFlux_"   + params.species_param[i_species].species_type).c_str());
+        heatFlux_global[i_species]      = new Field3D(dims_global, ("heatFlux_"       + params.species_param[i_species].species_type).c_str());
     }
 }
 
@@ -85,10 +85,10 @@ void Diagnostic3D::run( Grid* grid, vector<Species*>& vecSpecies, ElectroMagn* E
                 jc = p1->position(1, iPart) * dy_inv_;
                 kc = p1->position(2, iPart) * dz_inv_;
                 //cout<<"iPart"<<ic<<" "<<jc<<" "<<kc<<endl;
-                //vector<unsigned int> grid_dims = grid3D->iswall_global_3D.get_dims();
+                //vector<unsigned int> grid_dims = grid3D->iswall_3D.get_dims();
                 //cout<<"dims "<<grid_dims[0]<<" "<<grid_dims[1]<<" "<<grid_dims[2]<<endl;
-                if(grid3D->iswall_global_3D(ic,jc,kc) == 1 && grid3D->iswall_global_3D(ic,jc,kc+1) == 1 && grid3D->iswall_global_3D(ic,jc+1,kc) == 1 && grid3D->iswall_global_3D(ic,jc+1,kc+1) == 1
-                && grid3D->iswall_global_3D(ic+1,jc,kc) == 1 && grid3D->iswall_global_3D(ic+1,jc,kc+1) == 1 && grid3D->iswall_global_3D(ic+1,jc+1,kc) == 1 && grid3D->iswall_global_3D(ic+1,jc+1,kc+1) == 1)
+                if(grid3D->iswall_3D(ic,jc,kc) == 1 && grid3D->iswall_3D(ic,jc,kc+1) == 1 && grid3D->iswall_3D(ic,jc+1,kc) == 1 && grid3D->iswall_3D(ic,jc+1,kc+1) == 1
+                && grid3D->iswall_3D(ic+1,jc,kc) == 1 && grid3D->iswall_3D(ic+1,jc,kc+1) == 1 && grid3D->iswall_3D(ic+1,jc+1,kc) == 1 && grid3D->iswall_3D(ic+1,jc+1,kc+1) == 1)
                 {   
                     //if(iLine_cross != 4) { cout<<"iLine_cross = "<<iLine_cross<<endl; }
                     //cout<<"has find "<<endl;                   

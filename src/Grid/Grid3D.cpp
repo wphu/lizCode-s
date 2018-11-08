@@ -38,25 +38,21 @@ Grid3D::Grid3D(
 
     // number of nodes of the grid in the x-direction
     dims_.resize(3);
-    globalDims_.resize(3);
 
-    dims_[0] = params.n_space[0]+1+2*params.oversize[0];
-    dims_[1] = params.n_space[1]+1+2*params.oversize[1];
-    dims_[2] = params.n_space[2]+1+2*params.oversize[2];
+    dims_[0] = params.n_space[0]+1;
+    dims_[1] = params.n_space[1]+1;
+    dims_[2] = params.n_space[2]+1;
 
-    globalDims_[0]=params.n_space_global[0]+1;
-    globalDims_[1]=params.n_space_global[1]+1;
-    globalDims_[2]=params.n_space_global[2]+1;
 
-    nx=globalDims_[0];
-    ny=globalDims_[1];
-    nz=globalDims_[2];
+    nx=dims_[0];
+    ny=dims_[1];
+    nz=dims_[2];
 
     iswall_3D.allocate_dims(dims_);
-    iswall_global_3D.allocate_dims(globalDims_);
-    bndr_global_3D.allocate_dims(globalDims_);
-    bndrVal_global_3D.allocate_dims(globalDims_);
-    numcp_global_3D.allocate_dims(globalDims_);
+    iswall_3D.allocate_dims(dims_);
+    bndr_3D.allocate_dims(dims_);
+    bndrVal_3D.allocate_dims(dims_);
+    numcp_3D.allocate_dims(dims_);
 
     if(gridType == "rectangle")
     {
@@ -112,11 +108,11 @@ void Grid3D::computeNcp()
         {
             for(int k = 0; k < nz; k++)
             {
-                if( bndr_global_3D(i,j,k) == 0 || bndr_global_3D(i,j,k) == 1
-                 || bndr_global_3D(i,j,k) == 2 || bndr_global_3D(i,j,k) == 8)
+                if( bndr_3D(i,j,k) == 0 || bndr_3D(i,j,k) == 1
+                 || bndr_3D(i,j,k) == 2 || bndr_3D(i,j,k) == 8)
                 {
                     ncp++;
-                    numcp_global_3D(i,j,k) = ncp-1;
+                    numcp_3D(i,j,k) = ncp-1;
                 } 
             }
             

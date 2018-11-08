@@ -72,6 +72,7 @@ ElectroMagn(params, input_data)
     rho_avg  = new Field2D(dimPrim, "Rho_avg" );
 
     // Allocation of time-averaged EM fields
+    phi_    = new Field2D(dimPrim, "Phi");
     phi_avg = new Field2D(dimPrim, "Phi_avg");
     Ex_avg  = new Field2D(dimPrim, "Ex_avg");
     Ey_avg  = new Field2D(dimPrim, "Ey_avg");

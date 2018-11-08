@@ -43,7 +43,6 @@ public:
     //! vector containing the dimensions of the Grid
     //! \todo private/friend/modify SmileiMPI* (JD)
     std::vector<unsigned int> dims_;
-    std::vector<unsigned int> globalDims_;
 
     //! returns the dimension of the Grid
     inline std::vector<unsigned int> dims () {return dims_;}
@@ -53,14 +52,12 @@ public:
 
     //! pointer to the linearized array
     int* iswall_;
-
-    int* iswall_global_;
-    int* bndr_global_;
-    double* bndrVal_global_;
+    int* bndr_;
+    double* bndrVal_;
 
     //! The number of the current point in the discrete Poisson Eqution left coefficient matrix
-    int* numcp_global_;
-    //>>>total number of numcp_global_ points
+    int* numcp_;
+    //>>>total number of numcp_ points
     int ncp;
     std::vector<int> dims_source;
     int nx,ny,nz;

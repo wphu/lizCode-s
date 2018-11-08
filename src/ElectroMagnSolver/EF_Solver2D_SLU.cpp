@@ -20,6 +20,7 @@ Solver2D(params)
     dxy = dx * dy;
 
     grid2D = static_cast<Grid2D*>(grid);
+    MESSAGE(grid2D->dims_[0]);
 
     initSLU();
 }
@@ -31,66 +32,14 @@ EF_Solver2D_SLU::~EF_Solver2D_SLU()
 
 void EF_Solver2D_SLU::operator() (ElectroMagn* fields)
 {
-    Field2D* Ex2D = static_cast<Field2D*>(fields->Ex_);
-    Field2D* Ey2D = static_cast<Field2D*>(fields->Ey_);
-
-    Field2D* rho2D           = static_cast<Field2D*>(fields->rho_);
-    Field2D* phi2D           = static_cast<Field2D*>(fields->phi_);
-
-    solve_SLU(rho2D, phi2D);
-    solve_Exy(phi2D, Ex2D, Ey2D);
+    solve_SLU(fields->rho_, fields->phi_);
+    solve_Exy(fields->phi_, fields->Ex_, fields->Ey_);
 }
 
 
 void EF_Solver2D_SLU::initSLU_test()
 {
 
-    SuperMatrix A, L, U, B;
-    double   *a, *rhs;
-    double   s, u, p, e, r, l;
-    int      *asub, *xa;
-    int      *perm_r; /* row permutations from partial pivoting */
-    int      *perm_c; /* column permutation vector */
-    int      nrhs, info, i, m, n, nnz, permc_spec;
-    superlu_options_t options;
-    SuperLUStat_t stat;
-    /* Initialize matrix A. */
-    m = n = 5;
-    nnz = 12;
-    if ( !(a = doubleMalloc(nnz)) ) ABORT("Malloc fails for a[].");
-    if ( !(asub = intMalloc(nnz)) ) ABORT("Malloc fails for asub[].");
-    if ( !(xa = intMalloc(n+1)) ) ABORT("Malloc fails for xa[].");
-    s = 19.0; u = 21.0; p = 16.0; e = 5.0; r = 18.0; l = 12.0;
-    a[0] = s; a[1] = l; a[2] = l; a[3] = u; a[4] = l; a[5] = l;
-    a[6] = u; a[7] = p; a[8] = u; a[9] = e; a[10]= u; a[11]= r;
-    asub[0] = 0; asub[1] = 1; asub[2] = 4; asub[3] = 1;
-    asub[4] = 2; asub[5] = 4; asub[6] = 0; asub[7] = 2;
-    asub[8] = 0; asub[9] = 3; asub[10]= 3; asub[11]= 4;
-    xa[0] = 0; xa[1] = 3; xa[2] = 6; xa[3] = 8; xa[4] = 10; xa[5] = 12;
-
-    /* Create matrix A in the format expected by SuperLU. */
-    dCreate_CompCol_Matrix(&A, m, n, nnz, a, asub, xa, SLU_NC, SLU_D, SLU_GE);
-
-    /* Create right-hand side matrix B. */
-    nrhs = 1;
-    if ( !(rhs = doubleMalloc(m * nrhs)) ) ABORT("Malloc fails for rhs[].");
-    for (i = 0; i < m; ++i) rhs[i] = 1.0;
-    dCreate_Dense_Matrix(&B, m, nrhs, rhs, m, SLU_DN, SLU_D, SLU_GE);
-
-    if ( !(perm_r = intMalloc(m)) ) ABORT("Malloc fails for perm_r[].");
-    if ( !(perm_c = intMalloc(n)) ) ABORT("Malloc fails for perm_c[].");
-
-    /* Set the default input options. */
-    set_default_options(&options);
-    options.ColPerm = NATURAL;
-
-    /* Initialize the statistics variables. */
-    StatInit(&stat);
-
-    /* Solve the linear system. */
-    dgssv(&options, &A, perm_c, perm_r, &L, &U, &B, &stat, &info);
-
-    printf("LU factorization: dgssvx() returns info %d\n", info);
 
 
 }
@@ -117,10 +66,10 @@ void EF_Solver2D_SLU::initSLU()
         for(j=0; j<ny; j++)
         {
             // normal points in the calculation region
-            if(grid2D->bndr_global_2D[i][j]==0) 
+            if(grid2D->bndr_2D[i][j]==0) 
             {
-                hl = grid2D->numcp_global_2D[i][j] - grid2D->numcp_global_2D[i-1][j];
-                hr = grid2D->numcp_global_2D[i+1][j] - grid2D->numcp_global_2D[i][j];
+                hl = grid2D->numcp_2D[i][j] - grid2D->numcp_2D[i-1][j];
+                hr = grid2D->numcp_2D[i+1][j] - grid2D->numcp_2D[i][j];
 
                 nnz=nnz+5;
                 
@@ -139,7 +88,7 @@ void EF_Solver2D_SLU::initSLU()
             }
 
             // Dirchlet boudnary points
-            else if(grid2D->bndr_global_2D[i][j]==1) 
+            else if(grid2D->bndr_2D[i][j]==1) 
             {
                 nnz++;
 
@@ -150,9 +99,9 @@ void EF_Solver2D_SLU::initSLU()
             }
 
             // periodic boudnary points at lowwer boudary in y direction
-            else if( grid2D->bndr_global_2D[i][j]==8 && j==0) 
+            else if( grid2D->bndr_2D[i][j]==8 && j==0) 
             {
-                hu = grid2D->numcp_global_2D[i][ny-1] - grid2D->numcp_global_2D[i][j];
+                hu = grid2D->numcp_2D[i][ny-1] - grid2D->numcp_2D[i][j];
                 nnz=nnz+2;
 
                 val[ii].push_back(1.0);
@@ -164,11 +113,11 @@ void EF_Solver2D_SLU::initSLU()
             }
 
             // periodic boudnary points at upper boudary in y direction
-            else if ( grid2D->bndr_global_2D[i][j] == 8 && j == ny-1 ) 
+            else if ( grid2D->bndr_2D[i][j] == 8 && j == ny-1 ) 
             {
-                hl = grid2D->numcp_global_2D[i][j] - grid2D->numcp_global_2D[i-1][j];
-                hr = grid2D->numcp_global_2D[i+1][j] - grid2D->numcp_global_2D[i][j];
-                hd = grid2D->numcp_global_2D[i][ny-1] - grid2D->numcp_global_2D[i][1];
+                hl = grid2D->numcp_2D[i][j] - grid2D->numcp_2D[i-1][j];
+                hr = grid2D->numcp_2D[i+1][j] - grid2D->numcp_2D[i][j];
+                hd = grid2D->numcp_2D[i][ny-1] - grid2D->numcp_2D[i][1];
                 nnz=nnz+5;
 
                 val[ii].push_back(-4.0);
@@ -186,9 +135,9 @@ void EF_Solver2D_SLU::initSLU()
             }
 
             // periodic boudnary points at left boudary in x direction
-            else if( grid2D->bndr_global_2D[i][j]==8 && i==0) 
+            else if( grid2D->bndr_2D[i][j]==8 && i==0) 
             {
-                hr = grid2D->numcp_global_2D[nx-1][j] - grid2D->numcp_global_2D[i][j];
+                hr = grid2D->numcp_2D[nx-1][j] - grid2D->numcp_2D[i][j];
                 nnz=nnz+2;
 
                 val[ii].push_back(1.0);
@@ -200,9 +149,9 @@ void EF_Solver2D_SLU::initSLU()
             }
 
             // periodic boudnary points at right boudary in x direction
-            else if ( grid2D->bndr_global_2D[i][j] == 8 && i == nx-1 ) {
-                hl = grid2D->numcp_global_2D[i][j] - grid2D->numcp_global_2D[i-1][j];
-                hr = grid2D->numcp_global_2D[i][j] - grid2D->numcp_global_2D[1][j];
+            else if ( grid2D->bndr_2D[i][j] == 8 && i == nx-1 ) {
+                hl = grid2D->numcp_2D[i][j] - grid2D->numcp_2D[i-1][j];
+                hr = grid2D->numcp_2D[i][j] - grid2D->numcp_2D[1][j];
                 nnz=nnz+5;
 
                 val[ii].push_back(-4.0);
@@ -314,26 +263,26 @@ void EF_Solver2D_SLU::solve_SLU(Field* rho, Field* phi)
 
     Field2D* rho2D = static_cast<Field2D*>(rho);
     Field2D* phi2D = static_cast<Field2D*>(phi);
-
+    
     //>>>convert Field2D rho to SuperLU right hand side matrix
     int ii;
     ii = 0;
     for ( int i=0; i<nx; i++)
     {
       for ( int j=0; j<ny; j++) {
-        if ( grid2D->bndr_global_2D[i][j] == 0 ) {
+        if ( grid2D->bndr_2D[i][j] == 0 ) {
           rhsb[ii] = - dxy * const_ephi0_inv * (*rho2D)(i,j);
           ii++;
         }
-        else if ( grid2D->bndr_global_2D[i][j] == 1) {
-          rhsb[ii] = grid2D->bndrVal_global_2D[i][j];
+        else if ( grid2D->bndr_2D[i][j] == 1) {
+          rhsb[ii] = grid2D->bndrVal_2D[i][j];
           ii++;
         }
-        else if ( grid2D->bndr_global_2D[i][j] == 8 && ( j == 0 || i == 0 )) {
+        else if ( grid2D->bndr_2D[i][j] == 8 && ( j == 0 || i == 0 )) {
           rhsb[ii] = 0.0;
           ii++;
         }
-        else if ( grid2D->bndr_global_2D[i][j] == 8 && ( j == ny-1 || i == nx-1 )) {
+        else if ( grid2D->bndr_2D[i][j] == 8 && ( j == ny-1 || i == nx-1 )) {
           rhsb[ii] = - dxy * const_ephi0_inv * (*rho2D)(i,j);
           ii++;
         }
@@ -342,7 +291,6 @@ void EF_Solver2D_SLU::solve_SLU(Field* rho, Field* phi)
 
       }
     }//>>>end convert
-
 
 
     /* ------------------------------------------------------------
@@ -358,26 +306,25 @@ void EF_Solver2D_SLU::solve_SLU(Field* rho, Field* phi)
            &Glu, &mem_usage, &stat, &info);
 
     //printf("Triangular solve: dgssvx() returns info %d\n", info);
-
     //>>>convert SuperLU solution X to Field2D phi
     ii=0;
-    for ( int i=0; i<nx; i++)
+    for ( unsigned int i=0; i<nx; i++)
     {
-        for ( int j=0; j<ny; j++)
+        for ( unsigned int j=0; j<ny; j++)
         {
-          if ( grid2D->bndr_global_2D[i][j] == 0 || grid2D->bndr_global_2D[i][j] == 1
-          || grid2D->bndr_global_2D[i][j] == 2 || grid2D->bndr_global_2D[i][j] == 8) {
-            (*phi2D)(i,j) = rhsx[ii];
-            ii++;
-          }
+            if ( grid2D->bndr_2D[i][j] == 0 || grid2D->bndr_2D[i][j] == 1
+            || grid2D->bndr_2D[i][j] == 2 || grid2D->bndr_2D[i][j] == 8) 
+            {
+                (*phi2D)(i,j) = rhsx[ii];
+                ii++;
+            }
 
-          if(grid2D->bndr_global_2D[i][j] == 5) {
-              (*phi2D)(i,j) = grid2D->bndrVal_global_2D[i][j];
-          }
+            if(grid2D->bndr_2D[i][j] == 5) {
+                (*phi2D)(i,j) = grid2D->bndrVal_2D[i][j];
+            }
 
         }//>>>end convert
     }
-
     StatFree(&stat);
 
 

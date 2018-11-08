@@ -41,12 +41,12 @@ public:
     void geometry_gap();
     void computeNcp();
     void compute();
-    Array3D<int> iswall_3D;
-  	Array3D<int> iswall_global_3D;
-    Array3D<int> bndr_global_3D;
-    Array3D<double> bndrVal_global_3D;
+
+  	Array3D<int> iswall_3D;
+    Array3D<int> bndr_3D;
+    Array3D<double> bndrVal_3D;
     // The number of the current point in the discrete Poisson Eqution left coefficient matrix
-    Array3D<int> numcp_global_3D;
+    Array3D<int> numcp_3D;
 
     double potential_wall;
 

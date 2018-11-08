@@ -215,14 +215,14 @@ bool Diagnostic2D::find_cross_segment(Grid2D *grid2D, Particles *particles, int 
     pos_old[0] = particles->position_old(0, iPart);
     pos_old[1] = particles->position_old(1, iPart);
 
-    if( grid2D->iswall_global_2D[ic][jc] == 1 && grid2D->iswall_global_2D[ic+1][jc] == 1 && grid2D->iswall_global_2D[ic+1][jc+1] == 1
-     && grid2D->iswall_global_2D[ic][jc+1] == 1 ) 
+    if( grid2D->iswall_2D[ic][jc] == 1 && grid2D->iswall_2D[ic+1][jc] == 1 && grid2D->iswall_2D[ic+1][jc+1] == 1
+     && grid2D->iswall_2D[ic][jc+1] == 1 ) 
     {
         is_in_wall = true;
     }
 
-    if( grid2D->iswall_global_2D[ic][jc] == 1 || grid2D->iswall_global_2D[ic+1][jc] == 1 || grid2D->iswall_global_2D[ic+1][jc+1] == 1
-     || grid2D->iswall_global_2D[ic][jc+1] == 1 ) 
+    if( grid2D->iswall_2D[ic][jc] == 1 || grid2D->iswall_2D[ic+1][jc] == 1 || grid2D->iswall_2D[ic+1][jc+1] == 1
+     || grid2D->iswall_2D[ic][jc+1] == 1 ) 
     {
         ic0 = ic;
         jc0 = jc;

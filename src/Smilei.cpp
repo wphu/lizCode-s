@@ -188,8 +188,10 @@ int main (int argc, char* argv[])
         EMfields->restartRhoJs(ispec, 0);
         vecSpecies[ispec]->Project(time_dual, ispec, EMfields, Proj, params);
     }
+    MESSAGE("Begin solving...");
     EMfields->computeTotalRhoJ();
     (*solver)(EMfields);
+    MESSAGE("End solving...");
 
 
     // ------------------------------------------------------------------

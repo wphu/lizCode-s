@@ -41,10 +41,9 @@ public:
     void computeNcp();
     void compute();
 
-    int **iswall_2D;
-  	int **iswall_global_2D;
-    int **bndr_global_2D;
-    double **bndrVal_global_2D;
+  	int **iswall_2D;
+    int **bndr_2D;
+    double **bndrVal_2D;
 
     // define boundary lines, lines[iLine][iSegment]
     vector< vector<segment> > lines;
@@ -53,7 +52,7 @@ public:
     vector<int> n_segments;
 
     // The number of the current point in the discrete Poisson Eqution left coefficient matrix
-    int **numcp_global_2D;
+    int **numcp_2D;
 
     // Tomakak divertor gap geometry Parameters
     std::string gapKind;
