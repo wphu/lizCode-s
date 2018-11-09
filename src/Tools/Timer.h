@@ -2,6 +2,7 @@
 #define TIMER_H
 
 #include <string>
+#include <time.h>
 
 //  --------------------------------------------------------------------------------------------------------------------
 //! Class Timer
@@ -23,7 +24,8 @@ public:
     std::string getDateTime();
     //! Print accumulated time in stdout
     void print(double tot);
-    void print();    
+    void print();
+    void print_clock();
     //! name of the timer
     inline std::string name() {return name_;}
 private:

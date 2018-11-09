@@ -28,6 +28,8 @@
 #include "Field3D.h"
 #include "Tools.h"
 
+#include "Timer.h"
+
 using namespace std;
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -407,8 +409,8 @@ void Species::initAcceleration_imp(unsigned int nPart, unsigned int iPart)
 void Species::dynamics(double time_dual, unsigned int ispec, ElectroMagn* EMfields, Interpolator* Interp,
                        Projector* Proj, PicParams &params)
 {
-    //Interpolator* LocInterp = InterpolatorFactory::create(params);
-    Interpolator1D1Order_test* LocInterp = new Interpolator1D1Order_test(params);
+    Interpolator* LocInterp = InterpolatorFactory::create(params);
+    //Interpolator1D1Order_test* LocInterp = new Interpolator1D1Order_test(params);
 
     // Electric field at the particle position
     LocalFields Epart;
@@ -438,6 +440,7 @@ void Species::dynamics(double time_dual, unsigned int ispec, ElectroMagn* EMfiel
     // -------------------------------
     // calculate the particle dynamics
     // -------------------------------
+    Timer time_test_interp;
     if (time_dual>species_param.time_frozen) { // moving particle
         double gf = 1.0;
 
@@ -451,7 +454,9 @@ void Species::dynamics(double time_dual, unsigned int ispec, ElectroMagn* EMfiel
 
                 // Interpolate the fields at the particle position
                 //(*LocInterp)(EMfields, particles, iPart, &Epart);
+                time_test_interp.update();
                 (*LocInterp)(EMfields, particles, iPart, &Epart, &Bpart);
+                time_test_interp.restart();
 
                 // Push the particle
                 //(*Push)(particles, iPart, Epart);
@@ -492,6 +497,8 @@ void Species::dynamics(double time_dual, unsigned int ispec, ElectroMagn* EMfiel
             (*Proj)(EMfields->rho_s[ispec], particles, iPart);
         }
     }//END if time vs. time_frozen
+
+    time_test_interp.print_clock();
 
     delete LocInterp;
     erase_particles_from_bins(indexes_of_particles_to_exchange);
