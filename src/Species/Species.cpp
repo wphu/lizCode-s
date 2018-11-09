@@ -17,6 +17,7 @@
 #include "ElectroMagn.h"
 #include "Interpolator.h"
 #include "InterpolatorFactory.h"
+#include "Interpolator1D1Order_test.h"
 #include "Grid.h"
 #include "Grid2D.h"
 #include "Projector.h"
@@ -406,7 +407,8 @@ void Species::initAcceleration_imp(unsigned int nPart, unsigned int iPart)
 void Species::dynamics(double time_dual, unsigned int ispec, ElectroMagn* EMfields, Interpolator* Interp,
                        Projector* Proj, PicParams &params)
 {
-    Interpolator* LocInterp = InterpolatorFactory::create(params);
+    //Interpolator* LocInterp = InterpolatorFactory::create(params);
+    Interpolator1D1Order_test* LocInterp = new Interpolator1D1Order_test(params);
 
     // Electric field at the particle position
     LocalFields Epart;

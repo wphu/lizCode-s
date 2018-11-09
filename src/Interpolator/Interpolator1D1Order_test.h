@@ -1,8 +1,9 @@
 #ifndef INTERPOLATOR1D1ORDER_TEST_H
 #define INTERPOLATOR1D1ORDER_TEST_H
 
-
 #include "Field1D.h"
+#include "ElectroMagn.h"
+#include "Particles.h"
 //  --------------------------------------------------------------------------------------------------------------------
 //! Class for 2nd order interpolator for 1d3v simulations
 //  --------------------------------------------------------------------------------------------------------------------
@@ -23,6 +24,7 @@ public:
     };
 
 private:
+    double dx_inv_;
     // Last prim index computed
     int ip_;
     // Last dual index computed

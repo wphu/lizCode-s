@@ -3,13 +3,12 @@
 #include <cmath>
 #include <iostream>
 
-#include "ElectroMagn.h"
-#include "Field1D.h"
-#include "Particles.h"
+
 
 using namespace std;
 
-Interpolator1D1Order_test::Interpolator1D1Order_test(PicParams &params) : Interpolator1D(params) {
+Interpolator1D1Order_test::Interpolator1D1Order_test(PicParams &params)
+{
     dx_inv_ = 1.0/params.cell_length[0];
 }
 
