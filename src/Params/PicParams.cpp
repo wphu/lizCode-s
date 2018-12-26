@@ -224,12 +224,6 @@ PicParams::PicParams(InputData &ifile)
     }
 
 
-
-    // ------------------
-    // Species properties
-    // ------------------
-    readSpecies(ifile);
-
     global_every=0;
 
     ifile.extract("every",global_every);
@@ -267,6 +261,12 @@ PicParams::PicParams(InputData &ifile)
         MESSAGE("petsc_ksp_process_number > total_number_process, and is set to total_number_process");
     }
 
+
+    // ------------------
+    // Species properties
+    // ------------------
+    readSpecies(ifile);
+
     // -------------------------------------------------------
     // Compute usefull quantities and introduce normalizations
     // also defines defaults values for the species lengths
@@ -277,7 +277,8 @@ PicParams::PicParams(InputData &ifile)
 
 }
 
-void PicParams::readSpecies(InputData &ifile) {
+void PicParams::readSpecies(InputData &ifile) 
+{
     bool ok;
     for (int ispec = 0; ispec < ifile.nComponents("Species"); ispec++) 
     {
@@ -475,55 +476,6 @@ void PicParams::readSpecies(InputData &ifile) {
         // Save the Species params
         // -----------------------
         species_param.push_back(tmpSpec);
-    }
-}
-
-bool PicParams::extractProfile(InputData &ifile, PyObject *mypy, ProfileStructure &P)
-{
-    double val;
-    // If the profile is only a double, then convert to a constant function
-    if( PyTools::convert(mypy, val) ) {
-        // Extract the function "constant"
-        PyObject* constantFunction = ifile.extract_py("constant");
-        // Create the argument which has the value of the profile
-        PyObject* arg = PyTuple_New(1);
-        PyTuple_SET_ITEM(arg, 0, PyFloat_FromDouble(val));
-        // Create the constant anonymous function
-        PyObject * tmp = PyObject_Call(constantFunction, arg, NULL);
-        P.py_profile = tmp;
-        return true;
-    } else if (mypy && PyCallable_Check(mypy)) {
-        P.py_profile=mypy;
-        return true;
-    }
-    return false;
-}
-
-bool PicParams::extractOneProfile(InputData &ifile, string varname, ProfileStructure &P, int ispec) {
-    PyObject *mypy = ifile.extract_py(varname, "Species", ispec);
-    if( !extractProfile(ifile, mypy, P) ) return false;
-    return true;
-}
-
-void PicParams::extractVectorOfProfiles(InputData &ifile, string varname, vector<ProfileStructure*> &Pvec, int ispec)
-{
-    Pvec.resize(3);
-    vector<PyObject*> pvec = ifile.extract_pyVec(varname, "Species", ispec);
-    int len = pvec.size();
-    if( len==3 ) {
-        for(int i=0; i<len; i++) {
-            Pvec[i] = new ProfileStructure();
-            if( !extractProfile(ifile, pvec[i], *(Pvec[i])) )
-                ERROR("For species #" << ispec << ", "<<varname<<"["<<i<<"] not understood");
-        }
-    } else if ( len==1 ) {
-        Pvec[0] = new ProfileStructure();
-        if( !extractProfile(ifile, pvec[0], *(Pvec[0])) )
-            ERROR("For species #" << ispec << ", "<<varname<<" not understood");
-        Pvec[1] = Pvec[0];
-        Pvec[2] = Pvec[0];
-    } else {
-        ERROR("For species #" << ispec << ", "<<varname<<" needs 1 or 3 components.");
     }
 }
 

@@ -1,10 +1,4 @@
-/*
- * SmileiIO_Cart1D.cpp
- *
- *  Created on: 3 juil. 2013
- */
-
-#include "SmileiIO_Cart1D.h"
+#include "PicIO1D.h"
 
 #include <sstream>
 
@@ -16,7 +10,7 @@
 
 using namespace std;
 
-SmileiIO_Cart1D::SmileiIO_Cart1D(PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies)
+PicIO1D::PicIO1D(PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies)
 : SmileiIO(params)
 {
     initVDF(params, fields, vecSpecies);
@@ -24,12 +18,12 @@ SmileiIO_Cart1D::SmileiIO_Cart1D(PicParams& params, ElectroMagn* fields, vector<
     createFieldsPattern(params, fields);
 }
 
-SmileiIO_Cart1D::~SmileiIO_Cart1D()
+PicIO1D::~PicIO1D()
 {
 }
 
 //> create hdf5 data hierarchical structure: datespace, dateset and so on
-void SmileiIO_Cart1D::createFieldsPattern( PicParams& params, ElectroMagn* fields )
+void PicIO1D::createFieldsPattern( PicParams& params, ElectroMagn* fields )
 {
     fieldsGroup.dims_global[2] = params.n_space[0] + 1;
     fieldsGroup.dims_global[1] = 1;
@@ -63,7 +57,7 @@ void SmileiIO_Cart1D::createFieldsPattern( PicParams& params, ElectroMagn* field
 } // END createPattern
 
 // Create particles h5 file pattern
-void SmileiIO_Cart1D::createDiagsPattern( PicParams& params, Diagnostic* diag)
+void PicIO1D::createDiagsPattern( PicParams& params, Diagnostic* diag)
 {
     Diagnostic1D* diag1D = static_cast<Diagnostic1D*>(diag);
 
@@ -222,7 +216,7 @@ void SmileiIO_Cart1D::createDiagsPattern( PicParams& params, Diagnostic* diag)
 }
 
 
-void SmileiIO_Cart1D::createPartsPattern( PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies )
+void PicIO1D::createPartsPattern( PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies )
 {
 
     // For particles, size ofdims_global should be 5: dims_global[nx][ny][nz][nvelocity][ntime]
@@ -256,7 +250,7 @@ void SmileiIO_Cart1D::createPartsPattern( PicParams& params, ElectroMagn* fields
 
 
 
-void SmileiIO_Cart1D::initVDF( PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies )
+void PicIO1D::initVDF( PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies )
 {
     vx_dim = 200;
 
@@ -291,7 +285,7 @@ void SmileiIO_Cart1D::initVDF( PicParams& params, ElectroMagn* fields, vector<Sp
 
 
 
-void SmileiIO_Cart1D::calVDF(PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies, int itime)
+void PicIO1D::calVDF(PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies, int itime)
 {
     Species *s;
     Particles *p;
@@ -352,7 +346,7 @@ void SmileiIO_Cart1D::calVDF(PicParams& params, ElectroMagn* fields, vector<Spec
 
 
 //! write potential, rho and so on into hdf5 file every some timesteps
-void SmileiIO_Cart1D::write( PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies, Diagnostic* diag, int itime)
+void PicIO1D::write( PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies, Diagnostic* diag, int itime)
 {
     const char* h5_name;
     int data_dims = 3;

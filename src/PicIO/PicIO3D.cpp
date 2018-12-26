@@ -1,10 +1,4 @@
-/*
- * SmileiIO_Cart3D.cpp
- *
- *  Created on: 3 juil. 2013
- */
-
-#include "SmileiIO_Cart3D.h"
+#include "PicIO3D.h"
 
 #include <sstream>
 
@@ -15,19 +9,19 @@
 
 using namespace std;
 
-SmileiIO_Cart3D::SmileiIO_Cart3D(PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies)
+PicIO3D::PicIO3D(PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies)
 : SmileiIO(params)
 {
     reloadP(params, vecSpecies);
     createFieldsPattern(params, fields);
 }
 
-SmileiIO_Cart3D::~SmileiIO_Cart3D()
+PicIO3D::~PicIO3D()
 {
 }
 
 //> create hdf5 file, datespace, dateset and so on
-void SmileiIO_Cart3D::createFieldsPattern( PicParams& params, ElectroMagn* fields )
+void PicIO3D::createFieldsPattern( PicParams& params, ElectroMagn* fields )
 {
     fieldsGroup.dims_global[2] = params.n_space[2] + 1;
     fieldsGroup.dims_global[1] = params.n_space[1] + 1;
@@ -61,13 +55,13 @@ void SmileiIO_Cart3D::createFieldsPattern( PicParams& params, ElectroMagn* field
 
 
 
-void SmileiIO_Cart3D::createPartsPattern( PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies )
+void PicIO3D::createPartsPattern( PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies )
 {
 
 }
 
 
-void SmileiIO_Cart3D::createDiagsPattern(PicParams& params, Diagnostic* diag)
+void PicIO3D::createDiagsPattern(PicParams& params, Diagnostic* diag)
 {
     Diagnostic3D* diag3D = static_cast<Diagnostic3D*>(diag);
 
@@ -114,14 +108,14 @@ void SmileiIO_Cart3D::createDiagsPattern(PicParams& params, Diagnostic* diag)
 }
 
 
-void SmileiIO_Cart3D::initVDF( PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies )
+void PicIO3D::initVDF( PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies )
 {
 
 }
 
 
 
-void SmileiIO_Cart3D::calVDF( PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies)
+void PicIO3D::calVDF( PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies)
 {
     Species *s;
     Particles *p;
@@ -130,7 +124,7 @@ void SmileiIO_Cart3D::calVDF( PicParams& params, ElectroMagn* fields, vector<Spe
 
 
 //! write potential, rho and so on into hdf5 file every some timesteps
-void SmileiIO_Cart3D::write( PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies, Diagnostic* diag, int itime)
+void PicIO3D::write( PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies, Diagnostic* diag, int itime)
 {
     const char* h5_name;
     int iDiag;
@@ -194,13 +188,13 @@ void SmileiIO_Cart3D::write( PicParams& params, ElectroMagn* fields, vector<Spec
 } // END write
 
 
-void SmileiIO_Cart3D::writeGrid(Grid* grid)
+void PicIO3D::writeGrid(Grid* grid)
 {
 
 }
 
 
-void SmileiIO_Cart3D::readGrid(Grid* grid)
+void PicIO3D::readGrid(Grid* grid)
 {
     hid_t       grid_dataspace_id;
     hid_t       grid_dataset_id;

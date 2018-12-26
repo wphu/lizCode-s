@@ -1,11 +1,9 @@
 /*
- * SmileiIO.h
- *
- *  Created on: 3 juil. 2013
- */
+output data to hdf5 file
+*/
 
-#ifndef SMILEIIO_H
-#define SMILEIIO_H
+#ifndef PICIO_H
+#define PICIO_H
 
 #include <string>
 #include <vector>
@@ -28,16 +26,17 @@ class Grid;
 using namespace std;
 
 //  --------------------------------------------------------------------------------------------------------------------
-//! Class SmileiIO
+//! Class PicIO
 //  --------------------------------------------------------------------------------------------------------------------
-class SmileiIO {
+class PicIO 
+{
 public:
     //! Create // HDF5 environment
     //! @see global_file_id_
     //! @see global_file_id_avg
-    SmileiIO(PicParams& params);
-    //! Destructor for SmileiIO
-    virtual ~SmileiIO();
+    PicIO(PicParams& params);
+    //! Destructor for PicIO
+    virtual ~PicIO();
 
     void addField(Field* field);
     virtual void createFieldsGroup( ElectroMagn* fields );

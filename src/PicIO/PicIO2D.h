@@ -1,28 +1,23 @@
-/*
- * SmileIO_Cart3D.h
- *
- *  Created on: 3 juil. 2013
- */
-#ifndef SMILEIO_CART3D_H
-#define SMILEIO_CART3D_H
+#ifndef PICIO2D_H
+#define PICIO2D_H
 
 #include <string>
 #include <vector>
 
-#include "SmileiIO.h"
-#include "Diagnostic3D.h"
-#include "Grid3D.h"
+#include "PicIO.h"
+#include "Diagnostic2D.h"
+#include "Grid2D.h"
 #include "Segment.h"
 
 //  --------------------------------------------------------------------------------------------------------------------
-//! Class SmileiIO_Cart3D
+//! Class PicIO2D
 //  --------------------------------------------------------------------------------------------------------------------
-class SmileiIO_Cart3D : public SmileiIO {
+class PicIO2D : public PicIO {
 public:
     //! Create // HDF5 environment
-    SmileiIO_Cart3D( PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies);
-    //! Destructor for SmileiIO
-    ~SmileiIO_Cart3D();
+    PicIO2D( PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies);
+    //! Destructor for PicIO
+    ~PicIO2D();
 
     virtual void write( PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies, Diagnostic* diag, int itime);
 
@@ -49,4 +44,4 @@ private:
 
 };
 
-#endif /* SMILEIO_CART3D_H_ */
+#endif /* SMILEIO_CART2D_H_ */

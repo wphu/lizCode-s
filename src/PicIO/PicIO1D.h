@@ -1,29 +1,24 @@
-/*
- * SmileIO_Cart2D.h
- *
- *  Created on: 3 juil. 2013
- */
-#ifndef SMILEIO_CART1D_H
-#define SMILEIO_CART1D_H
+#ifndef PICIO1D_H
+#define PICIO1D_H
 
 #include <string>
 #include <vector>
 
-#include "SmileiIO.h"
+#include "PicIO.h"
 #include "Array4D.h"
 #include "Diagnostic1D.h"
 
 using namespace std;
 
 //  --------------------------------------------------------------------------------------------------------------------
-//! Class SmileiIO_Cart1D
+//! Class PicIO1D
 //  --------------------------------------------------------------------------------------------------------------------
-class SmileiIO_Cart1D : public SmileiIO {
+class PicIO1D : public PicIO {
 public:
     //! Create // HDF5 environment
-    SmileiIO_Cart1D( PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies);
-    //! Destructor for SmileiIO
-    ~SmileiIO_Cart1D();
+    PicIO1D( PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies);
+    //! Destructor for PicIO
+    ~PicIO1D();
 
     virtual void write( PicParams& params, ElectroMagn* fields, vector<Species*>& vecSpecies, Diagnostic* diag, int itime);
 

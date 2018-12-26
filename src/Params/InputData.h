@@ -1,9 +1,6 @@
-/*! @file InputData.h
-
- @brief InputData.h is the definition of the class InputData which interpretates a namelist-like structure
-
- @date 2013-02-15
- */
+/*
+InputData.h is the definition of the class InputData which interpretates a namelist-like structure
+*/
 
 #ifndef INPUTDATA_H
 #define INPUTDATA_H
@@ -24,12 +21,8 @@
 #include "PyTools.h"
 #include "PicParams.h"
 
-
-/*! \brief This is namelist helper.
- Namelist must be a valid python script.
-*/
-class InputData {
-
+class InputData 
+{
 public:
     InputData(std::vector<std::string>);
     ~InputData();

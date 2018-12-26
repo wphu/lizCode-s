@@ -1,8 +1,3 @@
-/*
- * SmileiIO.cpp
- *
- *  Created on: 3 juil. 2013
- */
 #include <sys/io.h>
 #include <sys/dir.h>
 #include <sstream>
@@ -11,13 +6,13 @@
 #include "PicParams.h"
 #include "ElectroMagn.h"
 #include "Species.h"
-#include "SmileiIO.h"
+#include "PicIO.h"
 
 using namespace std;
 
 // static varable must be defined and initialized here
 
-SmileiIO::SmileiIO(PicParams& params)
+PicIO::PicIO(PicParams& params)
 {
     // Fields_global.h5
     is_restart = 0;
@@ -26,7 +21,7 @@ SmileiIO::SmileiIO(PicParams& params)
 
 }
 
-SmileiIO::~SmileiIO()
+PicIO::~PicIO()
 {
     // Management of global IO file
     //H5Fclose( data_file_id );
@@ -34,14 +29,14 @@ SmileiIO::~SmileiIO()
 
 
 
-void SmileiIO::addField(Field* field)
+void PicIO::addField(Field* field)
 {
     fieldsGroup.dataset_stringName.push_back(field->name);
     fieldsGroup.dataset_data.push_back(field->data_);
 }
 
 
-void SmileiIO::createFieldsGroup( ElectroMagn* fields )
+void PicIO::createFieldsGroup( ElectroMagn* fields )
 {
     const char* h5_name;
     int data_dims = 3;
@@ -67,7 +62,7 @@ void SmileiIO::createFieldsGroup( ElectroMagn* fields )
     fieldsGroup.dataset_id.resize( fieldsGroup.dataset_stringName.size() );
 }
 
-void SmileiIO::createPartsGroup( vector<Species*>& vecSpecies )
+void PicIO::createPartsGroup( vector<Species*>& vecSpecies )
 {
     const char* h5_name;
     int data_dims = 3;
@@ -125,7 +120,7 @@ void SmileiIO::createPartsGroup( vector<Species*>& vecSpecies )
 }
 
 // Create restore h5 file pattern
-void SmileiIO::storeP( PicParams& params, vector<Species*>& vecSpecies, int itime )
+void PicIO::storeP( PicParams& params, vector<Species*>& vecSpecies, int itime )
 {
     Species     *s1;
     Particles   *p1;
@@ -331,7 +326,7 @@ void SmileiIO::storeP( PicParams& params, vector<Species*>& vecSpecies, int itim
 }
 
 // Create restore h5 file pattern
-void SmileiIO::reloadP( PicParams& params, vector<Species*>& vecSpecies )
+void PicIO::reloadP( PicParams& params, vector<Species*>& vecSpecies )
 {
     Species     *s1;
     Particles   *p1;
@@ -492,7 +487,7 @@ void SmileiIO::reloadP( PicParams& params, vector<Species*>& vecSpecies )
 
 
 // Create restore h5 file pattern
-void SmileiIO::endStoreP(PicParams& params, vector<Species*>& vecSpecies, int itime)
+void PicIO::endStoreP(PicParams& params, vector<Species*>& vecSpecies, int itime)
 {
     Species *s1;
     Particles *p1;
