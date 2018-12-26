@@ -43,12 +43,12 @@ void Timer::print(double tot)
 
 void Timer::print()
 {
-    MESSAGE("\t" << setw(12) << "The total time: " << "\t" << time_acc_ / CLOCKS_PER_SEC );
+    MESSAGE("\t" << setw(12) << name_ + ": " << "\t" << time_acc_ / CLOCKS_PER_SEC );
 }
 
 void Timer::print_clock()
 {
-    MESSAGE("\t" << setw(12) << "The total time: " << "\t" << time_acc_);
+    MESSAGE("\t" << setw(12) << name_ + ": " << "\t" << time_acc_);
 }
 
 string Timer::getDateTime()

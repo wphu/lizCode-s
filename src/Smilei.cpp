@@ -76,7 +76,7 @@ int main (int argc, char* argv[])
     timer[1].init("EmitLoad");
     timer[2].init("Collide");
     timer[3].init("Interpolate and Move");
-    
+    timer[4].init("Sort particles");
     timer[5].init("Absorb paritcle (2D)");
     timer[6].init("Project Particle");
     timer[7].init("PSI");
@@ -262,9 +262,9 @@ int main (int argc, char* argv[])
             {
                 if(timestep_control[ispec] == params.species_param[ispec].timestep_zoom)
                 {
-                    timer[12].restart();
-                    vecSpecies[ispec]->sort_part(); // Should we sort test particles ?? (JD)
-                    timer[12].update();
+                    //timer[12].restart();
+                    //vecSpecies[ispec]->sort_part(); // Should we sort test particles ?? (JD)
+                    //timer[12].update();
                     timestep_control[ispec] = 0;
                 }
                 vecSpecies[ispec]->clearExchList();
@@ -361,14 +361,7 @@ int main (int argc, char* argv[])
     timer[0].update();
     for( int i = 0; i < timer.size(); i++)
     {
-        if(i == 0)
-        {
-            TITLE(timer[i].name() << " = " << timer[i].getDateTime());
-        }
-        else 
-        {
-            TITLE(timer[i].name() << " = " << timer[i].getTime() <<" s");
-        }
+        timer[i].print();
     }
 
 

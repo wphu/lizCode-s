@@ -440,8 +440,9 @@ void Species::dynamics(double time_dual, unsigned int ispec, ElectroMagn* EMfiel
     // -------------------------------
     // calculate the particle dynamics
     // -------------------------------
-    Timer time_test_interp;
-    if (time_dual>species_param.time_frozen) { // moving particle
+    //Timer time_test_interp;
+    if (time_dual>species_param.time_frozen) 
+    {   // moving particle
         double gf = 1.0;
 
         psi_particles.clear();
@@ -454,9 +455,9 @@ void Species::dynamics(double time_dual, unsigned int ispec, ElectroMagn* EMfiel
 
                 // Interpolate the fields at the particle position
                 //(*LocInterp)(EMfields, particles, iPart, &Epart);
-                time_test_interp.update();
+                //time_test_interp.update();
                 (*LocInterp)(EMfields, particles, iPart, &Epart, &Bpart);
-                time_test_interp.restart();
+                //time_test_interp.restart();
 
                 // Push the particle
                 //(*Push)(particles, iPart, Epart);
@@ -498,7 +499,7 @@ void Species::dynamics(double time_dual, unsigned int ispec, ElectroMagn* EMfiel
         }
     }//END if time vs. time_frozen
 
-    time_test_interp.print_clock();
+    //time_test_interp.print_clock();
 
     delete LocInterp;
     erase_particles_from_bins(indexes_of_particles_to_exchange);

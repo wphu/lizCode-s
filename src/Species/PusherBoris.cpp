@@ -24,11 +24,11 @@ void PusherBoris::operator() (Particles &particles, int ipart, LocalFields Epart
     double charge_over_mass_ = static_cast<double>(particles.charge(ipart))*one_over_mass_;
 
     particles.momentum(0, ipart) += charge_over_mass_*Epart.x*dt;
-    particles.momentum(1, ipart) += charge_over_mass_*Epart.y*dt;
-    particles.momentum(2, ipart) += charge_over_mass_*Epart.z*dt;
+    //particles.momentum(1, ipart) += charge_over_mass_*Epart.y*dt;
+    //particles.momentum(2, ipart) += charge_over_mass_*Epart.z*dt;
 
     // Move the particle
-    for ( int i = 0 ; i<nDim_ ; i++ ) {
+    for ( int i = 0 ; i<1 ; i++ ) {
         particles.position_old(i, ipart)  = particles.position(i, ipart);
         particles.position(i, ipart)     += dt*particles.momentum(i, ipart);
     }
