@@ -4,8 +4,6 @@
 #include <sstream>
 #include "ElectroMagn.h"
 #include "ElectroMagn1D.h"
-#include "ElectroMagn2D.h"
-#include "ElectroMagn3D.h"
 
 #include "PicParams.h"
 

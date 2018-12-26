@@ -6,10 +6,6 @@
 #include "PSI1D_RefDep.h"
 #include "PSI1D_Recycling.h"
 
-#include "PSI2D_SEE.h"
-#include "PSI2D_Sputtering.h"
-#include "PSI2D_RefDep.h"
-
 
 #include <string>
 #include <cmath>

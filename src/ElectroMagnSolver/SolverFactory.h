@@ -4,12 +4,6 @@
 #include "EF_Solver1D_TDMA.h"
 #include "EF_Solver1D_TDMA_imp.h"
 #include "EF_Solver1D_GeneralThomas.h"
-#include "MF_Solver1D_Yee.h"
-#include "MF_Solver2D_Yee.h"
-#include "MF_Solver2D_Cowan.h"
-#include "EF_Solver2D_SLU.h"
-#include "EF_Solver3D_SLU.h"
-#include "EF_Solver3D_UMFPACK.h"
 #include "InputData.h"
 #include "PicParams.h"
 
