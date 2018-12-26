@@ -11,11 +11,6 @@
 #include "Collisions1D_Recombination_Rad.h"
 #include "Collisions1D_Excitation.h"
 
-#include "Collisions2D_ChargeExchange.h"
-#include "Collisions2D_Coulomb.h"
-#include "Collisions2D_DSMC.h"
-#include "Collisions2D_Elastic.h"
-#include "Collisions2D_Ionization.h"
 
 
 
