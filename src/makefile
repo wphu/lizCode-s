@@ -61,7 +61,7 @@ CFLAGS 		+= $(DIRS:%=-I%)
 
 
 
-PYSCRIPTS := $(shell find Python -name \*.py)
+PYSCRIPTS := $(shell find Params -name \*.py)
 PYHEADERS := $(PYSCRIPTS:.py=.pyh)
 
 #collect all cpp files
