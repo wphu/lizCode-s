@@ -1,5 +1,6 @@
 /*
 InputData.h is the definition of the class InputData which interpretates a namelist-like structure
+Read input parameters from data/input.py
 */
 
 #ifndef INPUTDATA_H

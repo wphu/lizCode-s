@@ -37,8 +37,7 @@
 #include "DiagnosticFactory.h"
 #include "Timer.h"
 
-
-#ifdef  __DEBUG
+#ifdef __DEBUG
 #include <gperftools/profiler.h>
 #endif
 
@@ -47,7 +46,7 @@ using namespace std;
 // ---------------------------------------------------------------------------------------------------------------------
 //                                                   MAIN CODE
 // ---------------------------------------------------------------------------------------------------------------------
-int main (int argc, char* argv[])
+int main(int argc, char *argv[])
 {
     //cout.setf( ios::fixed,  ios::floatfield ); // floatfield set to fixed
 
@@ -57,14 +56,13 @@ int main (int argc, char* argv[])
 
     // Check for namelists (input files)
     vector<string> namelists(argv + 1, argv + argc);
-    if (namelists.size()==0) ERROR("No namelists given!");
-
-
+    if (namelists.size() == 0)
+        ERROR("No namelists given!");
 
     TITLE("Input data info");
     // Read the namelists file (no check!)
     InputData input_data(namelists);
-    
+
     TITLE("PicParams info");
     // Read simulation & diagnostics parameters
     PicParams params(input_data);
@@ -88,7 +86,6 @@ int main (int argc, char* argv[])
 
     timer[0].restart();
 
-
     // -------------------------------------------
     // Declaration of the main objects & operators
     // -------------------------------------------
@@ -101,8 +98,7 @@ int main (int argc, char* argv[])
     // Initialize the vecSpecies object containing all information of the different Species
     // ------------------------------------------------------------------------------------
     // vector of Species (virtual)
-    vector<Species*> vecSpecies = SpeciesFactory::createVector(params);
-
+    vector<Species *> vecSpecies = SpeciesFactory::createVector(params);
 
     // Initialize the electromagnetic fields and interpolation-projection operators
     // according to the simulation geometry
@@ -110,56 +106,53 @@ int main (int argc, char* argv[])
 
     TITLE("Initializing ElectroMagn Fields");
     // object containing the electromagnetic fields (virtual)
-    ElectroMagn* EMfields = ElectroMagnFactory::create(params, input_data);
+    ElectroMagn *EMfields = ElectroMagnFactory::create(params, input_data);
 
     TITLE("Initializing Fields Bounary Condition");
-    vector<ElectroMagnBC*> vecEmBC = ElectroMagnBCFactory::create(params);
+    vector<ElectroMagnBC *> vecEmBC = ElectroMagnBCFactory::create(params);
 
     TITLE("Creating PSI");
-    vector<PSI*> vecPSI = PSIFactory::create(params, input_data, vecSpecies);
+    vector<PSI *> vecPSI = PSIFactory::create(params, input_data, vecSpecies);
 
     TITLE("Creating PartSource");
-    vector<PartSource*> vecPartSource = PartSourceFactory::create(params, input_data, vecSpecies);
-
+    vector<PartSource *> vecPartSource = PartSourceFactory::create(params, input_data, vecSpecies);
 
     // Initialize the collisions (vector of collisions)
     // ------------------------------------------------------------------------------------
     TITLE("Creating Collisions");
-    vector<Collisions*> vecCollisions = CollisionsFactory::create(params, input_data, vecSpecies);
+    vector<Collisions *> vecCollisions = CollisionsFactory::create(params, input_data, vecSpecies);
 
     TITLE("Creating Interp/Proj");
     // interpolation operator (virtual)
-    Interpolator* Interp = InterpolatorFactory::create(params);
+    Interpolator *Interp = InterpolatorFactory::create(params);
 
     // projection operator (virtual)
-    Projector* Proj = ProjectorFactory::create(params);
+    Projector *Proj = ProjectorFactory::create(params);
 
     //Create i/o environment
     TITLE("Creating IO output environment");
-    SmileiIO*  sio  = SmileiIOFactory::create(params, EMfields, vecSpecies);
+    SmileiIO *sio = SmileiIOFactory::create(params, EMfields, vecSpecies);
 
     //>Initialize Grid
     TITLE("Creating grid");
-    Grid* grid = NULL;
+    Grid *grid = NULL;
     grid = GridFactory::create(params, input_data, sio);
 
-    if(grid != NULL && grid->gridType != "from_file")
+    if (grid != NULL && grid->gridType != "from_file")
     {
         sio->writeGrid(grid);
     }
 
     TITLE("Creating Diagnostic");
-    Diagnostic*  diag  = DiagnosticFactory::create(params, grid, EMfields, vecPSI, vecCollisions);
-    if(params.geometry == "3d3v")
+    Diagnostic *diag = DiagnosticFactory::create(params, grid, EMfields, vecPSI, vecCollisions);
+    if (params.geometry == "3d3v")
     {
         sio->createDiagsPattern(params, diag);
     }
-    
-
 
     TITLE("Creating Solver");
     timer[11].restart();
-    Solver* solver = NULL;
+    Solver *solver = NULL;
     solver = SolverFactory::create(params, input_data, grid);
     timer[11].update();
 
@@ -170,20 +163,20 @@ int main (int argc, char* argv[])
     // time at integer time-steps (primal grid)
     double time_prim = stepStart * params.timestep;
     // time at half-integer time-steps (dual grid)
-    double time_dual = (stepStart +0.5) * params.timestep;
+    double time_dual = (stepStart + 0.5) * params.timestep;
 
     int itime = stepStart;
 
     // control timesteps, use larger timesteps for some heavy particles
     vector<int> timestep_control;
-    timestep_control.resize( params.species_param.size() );
-    for(int i = 0; i < params.species_param.size(); i++)
+    timestep_control.resize(params.species_param.size());
+    for (int i = 0; i < params.species_param.size(); i++)
     {
         timestep_control[i] = 0;
     }
 
     TITLE("Solve the field first time before PIC loop");
-    for (unsigned int ispec=0 ; ispec<params.species_param.size(); ispec++)
+    for (unsigned int ispec = 0; ispec < params.species_param.size(); ispec++)
     {
         EMfields->restartRhoJs(ispec, 0);
         vecSpecies[ispec]->Project(time_dual, ispec, EMfields, Proj, params);
@@ -193,26 +186,25 @@ int main (int argc, char* argv[])
     (*solver)(EMfields);
     MESSAGE("End solving...");
 
-
     // ------------------------------------------------------------------
     //                     HERE STARTS THE PIC LOOP
     // ------------------------------------------------------------------
     TITLE("Time-Loop is started: number of time-steps n_time = " << params.n_time);
 
-    #ifdef  __DEBUG
-    
+#ifdef __DEBUG
+
     string prof_name = "./liz.prof";
     ProfilerStart(prof_name.c_str());
-    
-    /*
+
+/*
     string prof_name = "./liz.prof";
     ProfilerStart(prof_name.c_str());
     */
-    #endif
+#endif
 
-    if(params.method == "explicit")
+    if (params.method == "explicit")
     {
-        while(itime <= stepStop)
+        while (itime <= stepStop)
         {
             itime++;
             time_prim += params.timestep;
@@ -223,18 +215,18 @@ int main (int argc, char* argv[])
             //> add Particle Source: emit from boundary or load in some region
             //MESSAGE("Particle Source ");
             timer[1].restart();
-            for (unsigned int iPS=0 ; iPS<vecPartSource.size(); iPS++)
+            for (unsigned int iPS = 0; iPS < vecPartSource.size(); iPS++)
             {
-                vecPartSource[iPS]->emitLoad(params,vecSpecies,itime, EMfields);
+                vecPartSource[iPS]->emitLoad(params, vecSpecies, itime, EMfields);
             }
             timer[1].update();
 
             //MESSAGE("Collide ");
             // ================== Collide =========================================
             timer[2].restart();
-            if(itime % params.timesteps_collision == 0)
+            if (itime % params.timesteps_collision == 0)
             {
-                for (unsigned int icoll=0 ; icoll<vecCollisions.size(); icoll++)
+                for (unsigned int icoll = 0; icoll < vecCollisions.size(); icoll++)
                 {
                     vecCollisions[icoll]->collide(params, EMfields, vecSpecies, diag, itime);
                 }
@@ -245,10 +237,10 @@ int main (int argc, char* argv[])
             // ================== Interpolate and Move ===============================
             int tid(0);
             timer[3].restart();
-            for (unsigned int ispec=0 ; ispec<params.species_param.size(); ispec++)
+            for (unsigned int ispec = 0; ispec < params.species_param.size(); ispec++)
             {
                 timestep_control[ispec]++;
-                if(timestep_control[ispec] == params.species_param[ispec].timestep_zoom)
+                if (timestep_control[ispec] == params.species_param[ispec].timestep_zoom)
                 {
                     vecSpecies[ispec]->dynamics(time_dual, ispec, EMfields, Interp, Proj, params);
                 }
@@ -258,9 +250,9 @@ int main (int argc, char* argv[])
             //MESSAGE("Sort Particle ");
             // ================== Sort Particle ============================================
             timer[4].restart();
-            for (unsigned int ispec=0 ; ispec<params.species_param.size(); ispec++)
+            for (unsigned int ispec = 0; ispec < params.species_param.size(); ispec++)
             {
-                if(timestep_control[ispec] == params.species_param[ispec].timestep_zoom)
+                if (timestep_control[ispec] == params.species_param[ispec].timestep_zoom)
                 {
                     //timer[12].restart();
                     //vecSpecies[ispec]->sort_part(); // Should we sort test particles ?? (JD)
@@ -281,27 +273,26 @@ int main (int argc, char* argv[])
             //MESSAGE("Project Particle ");
             // ================== Project Particle =========================================
             timer[6].restart();
-            for (unsigned int ispec=0 ; ispec<params.species_param.size(); ispec++)
+            for (unsigned int ispec = 0; ispec < params.species_param.size(); ispec++)
             {
                 EMfields->restartRhoJs(ispec, 0);
                 vecSpecies[ispec]->Project(time_dual, ispec, EMfields, Proj, params);
             }
             timer[6].update();
 
-
             //MESSAGE("PSI ");
             // ================== Plasma Surface Interacton ==================================
             timer[7].restart();
-            for (unsigned int ipsi=0 ; ipsi<vecPSI.size(); ipsi++)
+            for (unsigned int ipsi = 0; ipsi < vecPSI.size(); ipsi++)
             {
                 vecPSI[ipsi]->performPSI(params, grid, vecSpecies, EMfields, diag, itime);
                 vecSpecies[vecPSI[ipsi]->species2]->sort_part(); // Should we sort test particles ?? (JD)
             }
-            for (unsigned int ispec=0 ; ispec<params.species_param.size(); ispec++)
+            for (unsigned int ispec = 0; ispec < params.species_param.size(); ispec++)
             {
                 // clear psi_particles to avoid unnecessary repeated PSI performs for multiple ion timesteps
                 vecSpecies[ispec]->clearPsiList();
-                vecSpecies[ispec]->clearExchList(); 
+                vecSpecies[ispec]->clearExchList();
             }
             timer[7].update();
 
@@ -316,54 +307,49 @@ int main (int argc, char* argv[])
             //MESSAGE("Write IO");
             // ================== Write IO ====================================================
             timer[10].restart();
-            if(params.ntime_step_avg)
+            if (params.ntime_step_avg)
             {
                 EMfields->incrementAvgFields(itime);
             }
-            if(itime % params.dump_step == 0)
+            if (itime % params.dump_step == 0)
             {
-                MESSAGE("time step = "<<itime);
+                MESSAGE("time step = " << itime);
             }
             sio->write(params, EMfields, vecSpecies, diag, itime);
-            if(itime % params.timesteps_restore == 0)
+            if (itime % params.timesteps_restore == 0)
             {
                 sio->storeP(params, vecSpecies, itime);
             }
             timer[10].update();
 
-        }//END of the time loop
+        } //END of the time loop
     }
-    else if(params.method == "implicit")
+    else if (params.method == "implicit")
     {
-        while(itime <= stepStop)
+        while (itime <= stepStop)
         {
             itime++;
             time_prim += params.timestep;
             time_dual += params.timestep;
             //MESSAGE("timestep = "<<itime);
 
-        }//END of the time loop
+        } //END of the time loop
     }
 
-    #ifdef  __DEBUG
+#ifdef __DEBUG
     ProfilerStop();
-    #endif
-
+#endif
 
     sio->endStoreP(params, vecSpecies, itime);
-
-
-
 
     // ------------------------------------------------------------------
     //                      HERE ENDS THE PIC LOOP
     // ------------------------------------------------------------------
     timer[0].update();
-    for( int i = 0; i < timer.size(); i++)
+    for (int i = 0; i < timer.size(); i++)
     {
         timer[i].print();
     }
-
 
     // ------------------------------------------------------------------------
     // check here if we can close the python interpreter
@@ -375,13 +361,11 @@ int main (int argc, char* argv[])
     //timer[0].update();
     //timer[0].print();
 
-
     // ------------------------------------------------------------------
     //                      Temporary validation diagnostics
     // ------------------------------------------------------------------
 
     // temporary EM fields dump in Fields.h5
-
 
     // ------------------------------
     //  Cleanup & End the simulation
@@ -390,16 +374,19 @@ int main (int argc, char* argv[])
     delete Interp;
     delete EMfields;
 
-    for (unsigned int iPS=0 ; iPS<vecPartSource.size(); iPS++) delete vecPartSource[iPS];
+    for (unsigned int iPS = 0; iPS < vecPartSource.size(); iPS++)
+        delete vecPartSource[iPS];
     vecPartSource.clear();
 
-    for(unsigned int i=0; i<vecCollisions.size(); i++) delete vecCollisions[i];
+    for (unsigned int i = 0; i < vecCollisions.size(); i++)
+        delete vecCollisions[i];
     vecCollisions.clear();
 
-    for (unsigned int ispec=0 ; ispec<vecSpecies.size(); ispec++) delete vecSpecies[ispec];
+    for (unsigned int ispec = 0; ispec < vecSpecies.size(); ispec++)
+        delete vecSpecies[ispec];
     vecSpecies.clear();
     TITLE("END");
     delete sio;
     return 0;
 
-}//END MAIN
+} //END MAIN

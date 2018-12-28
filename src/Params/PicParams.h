@@ -316,13 +316,13 @@ public:
     std::vector<double> externB;
 
     // some physics constants
-    double const_c;
-    double const_e;
-    double const_emass;
-    double const_ephi0;
-    double const_pi;
-    double const_boltz;     // Boltzmann constant
-    double const_h;         // Planck constant
+    const double const_e = 1.6021766208e-19;
+    const double const_emass = 9.10938356e-31;
+    const double const_c = 299792458.0;
+    const double const_ephi0 = 8.854187817620389e-12;
+    const double const_pi = 3.1415926;
+    const double const_boltz = 1.3806e-23;      
+    const double const_h = 6.62606957e-34;
 
     // some normalization factor
     double norm_omiga0;     // frequency

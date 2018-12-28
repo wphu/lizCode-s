@@ -7,42 +7,49 @@
 #include "PicParams.h"
 #include "Tools.h"
 
-class SpeciesFactory {
-public:
-    static Species* create(PicParams& params, int ispec) {
-        Species* sp = NULL;
-        if (params.species_param[ispec].dynamics_type=="norm") {
+class SpeciesFactory
+{
+  public:
+    static Species *create(PicParams &params, int ispec)
+    {
+        Species *sp = NULL;
+        if (params.species_param[ispec].dynamics_type == "norm")
+        {
             // Species with Boris dynamics
             sp = new Species_norm(params, ispec);
-        } else if (params.species_param[ispec].dynamics_type=="rrll") {
+        }
+        else if (params.species_param[ispec].dynamics_type == "rrll")
+        {
             // Species with Boris dynamics + Radiation Back-Reaction (using the Landau-Lifshitz formula)
             sp = new Species_rrll(params, ispec);
         } // END if
 
-	if (params.species_param[ispec].isTest) 
-    {
-	}
+        if (params.species_param[ispec].isTest)
+        {
+        }
 
         return sp;
     }
 
-    static std::vector<Species*> createVector(PicParams& params) {
-        std::vector<Species*> vecSpecies;
+    static std::vector<Species *> createVector(PicParams &params)
+    {
+        std::vector<Species *> vecSpecies;
         vecSpecies.resize(params.species_param.size());
 
-        Species *electron_species=NULL;
+        Species *electron_species = NULL;
 
         // create species
         unsigned int nPart;
-        for (unsigned int ispec=0 ; ispec<params.species_param.size() ; ispec++) {
+        for (unsigned int ispec = 0; ispec < params.species_param.size(); ispec++)
+        {
             vecSpecies[ispec] = SpeciesFactory::create(params, ispec);
-            if (params.species_param[ispec].species_type=="electron") {
-                electron_species=vecSpecies[ispec];
+            if (params.species_param[ispec].species_type == "electron")
+            {
+                electron_species = vecSpecies[ispec];
             }
             nPart = vecSpecies[ispec]->getNbrOfParticles();
-            MESSAGE("Species " << ispec << " (" << params.species_param[ispec].species_type << ") created with " << nPart << " particles" );
+            MESSAGE("Species " << ispec << " (" << params.species_param[ispec].species_type << ") created with " << nPart << " particles");
         } // END for ispec
-
 
         /* origin ionization class has been deleted, and electron impact ionization is
         included in Collisions class
@@ -61,7 +68,6 @@ public:
 
         return vecSpecies;
     }
-
 };
 
 #endif
